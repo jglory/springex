@@ -30,9 +30,19 @@
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            console.log("attributeChangedCallback");
-            if (this.#elements.length) {
-                switch (name) {
+            store.dispatch({
+                type: "onAttributeChanged",
+                data: {
+                    name: name,
+                    oldValue: oldValue,
+                    newValue: newValue,
+                }
+            });
+        }
+
+        onAttributeChanged(action) {
+            if (this.#elements["form"] !== undefined) {
+                switch (action.data.name) {
                     case "action":
                         this.#elements["form"].action = this.getAttribute("action");
                         break;
@@ -59,7 +69,6 @@
                         }
                         break;
                 }
-                this.dispatch();
             }
         }
 
@@ -144,6 +153,18 @@
             );
         }
 
+        getState() {
+            return {
+                action: this.#elements["form"].action,
+                finished: this.#elements["finished"].checked,
+                titleChecked: this.#elements["title-checked"].checked,
+                writerChecked: this.#elements["writer-checked"].checked,
+                keyword: this.#elements["keyword"].value,
+                startDate: this.#elements["start-date"].value,
+                finishDate: this.#elements["finish-date"].value
+            };
+        }
+
         render() {
             var state = store.getState();
 
@@ -173,7 +194,12 @@
             };
         }
 
-        var newState;
+        let newState;
+        if (action.type === "onAttributeChanged") {
+            const component = document.querySelector("todo-search-component");
+            component.onAttributeChanged(action);
+            newState = Object.assign({}, state, component.getState());
+        }
         if (action.type === "STATE_HAS_CHANGED") {
             newState = Object.assign({}, state, action.data);
         }
