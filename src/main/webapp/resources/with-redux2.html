@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js"></script>
+</head>
+
+<body>
+<style>
+  .container {
+    border: 5px solid black;
+    padding: 1rem;
+    margin-bottom:1rem;
+  }
+  body{
+    margin:1rem;
+  }
+</style>
+<h1>With redux</h1>
+<div id="red"></div>
+<div id="blue"></div>
+<div id="green"></div>
+<script>
+  function reducer(state, action) {
+    console.log(state, action);
+    if (state === undefined) {
+      return {color: "yellow"};
+    }
+
+    var newState;
+    if (action.type === "CHANGE_COLOR") {
+      newState = Object.assign({}, state, {color: action.color});
+    }
+    return newState;
+  }
+
+  var store = Redux.createStore(
+          reducer,
+          window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+  console.log(store.getState());
+
+  class Box {
+    constructor(color) {
+      this.color = color;
+    }
+
+    render() {
+      var state = store.getState();
+      document.querySelector('#' + this.color).innerHTML = `
+        <div class="container" id="component_${this.color}" style="background-color:${state.color}">
+            <h1>${this.color}</h1>
+            <input type="button" value="fire" onclick="
+                store.dispatch({type:'CHANGE_COLOR', color:'${this.color}'});
+            ">
+        </div>
+    `;
+    }
+  }
+  var boxes = [
+          new Box('red'),
+          new Box('blue'),
+          new Box('green'),
+  ];
+
+  for (const i in boxes) {
+    const box = boxes[i];
+    store.subscribe(box.render.bind(box));
+    box.render();
+  }
+
+</script>
+</body>
+
+</html>

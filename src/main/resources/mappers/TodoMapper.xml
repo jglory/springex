@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="page.aaws.springex.mapper.TodoMapper">
+
+    <sql id="search">
+        <where>
+            <if test="types != null and types.length > 0">
+                <foreach collection="types" item="type" open="(" close=")" separator=" OR ">
+                    <choose>
+                        <when test="type == 't'.toString()">
+                            title like concat('%', #{keyword}, '%')
+                        </when>
+                        <when test="type == 'w'.toString()">
+                            writer like concat('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </foreach>
+            </if>
+
+            <if test="finished">
+                <trim prefix="and">
+                    finished = 1
+                </trim>
+            </if>
+
+            <if test="from != null and to != null">
+                <trim prefix="and">
+                    dueDate between #{from} and #{to}
+                </trim>
+            </if>
+        </where>
+    </sql>
+
+    <delete id="delete">
+        delete from todo where tno=#{tno}
+    </delete>
+
+    <select id="search" resultType="page.aaws.springex.domain.TodoVo">
+        select * from todo
+        <include refid="search"></include>
+        order by tno desc limit #{skip}, #{size}
+    </select>
+
+    <select id="select" resultType="page.aaws.springex.domain.TodoVo">
+        select * from todo where tno=#{tno}
+    </select>
+
+    <select id="selectAll" resultType="page.aaws.springex.domain.TodoVo">
+        select * from todo
+        <include refid="search"></include>
+        order by tno desc limit #{skip}, #{size}
+    </select>
+
+    <select id="selectCount" resultType="int">
+        select count(tno) from todo
+        <include refid="search"></include>
+    </select>
+
+    <insert id="insert">
+        insert into todo(title, dueDate, writer) values (#{title}, #{dueDate}, #{writer})
+    </insert>
+
+    <update id="update">
+        update todo set title=#{title}, dueDate=#{dueDate}, finished=#{finished} where tno=#{tno}
+    </update>
+
+</mapper>

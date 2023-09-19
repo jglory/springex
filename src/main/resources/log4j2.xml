@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" status="WARN">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.springframework" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+
+        <Logger name="page.aaws" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        
+        <Logger name="page.aaws.springex.mapper" level="TRACE" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
