@@ -15,47 +15,10 @@
     <link href="/resources/bootstrap.min.css" rel="stylesheet">
 </head>
 <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js"></script>
-<%--<script type="application/javascript" src="/resources/scripts/todo-components.js"></script>--%>
+<script type="application/javascript" src="/resources/scripts/util.js"></script>
+<script type="application/javascript" src="/resources/scripts/redux.js"></script>
+<script type="application/javascript" src="/resources/scripts/web-component.js"></script>
 <script type="application/javascript">
-
-    const snakeToCamel = str =>
-        str.toLowerCase().replace(/([-_][a-z])/g, group =>
-            group
-                .toUpperCase()
-                .replace('-', '')
-                .replace('_', '')
-        );
-
-    Redux.components = [];
-    Redux.componentId = null;
-    Redux.registerWebComponent = function(component) {
-        Redux.components.push(component);
-        return Redux.components.length - 1;
-    }
-    Redux.queryComponent = function (action) {
-        return Redux.components[action.componentId];
-    }
-    Redux.queryComponentState = function (store, component) {
-        return store.getState()[component.componentId];
-    }
-    Redux.queryActionHandler = function (component, action) {
-        const handler = eval("component." + snakeToCamel(action.type));
-        return handler ? handler.bind(component) : null;
-    }
-
-    class WebComponent extends HTMLElement {
-        componentId = null;
-
-        _getComponentState() {
-            throw "WebComponent._getComponentState 를 구현하여 주십시오.";
-        }
-
-        getComponentState() {
-            let state = [];
-            state[this.componentId] = this._getComponentState();
-            return state;
-        }
-    }
 
     const COMPONENT_ON_LOAD = "COMPONENT_ON_LOAD";
     const ATTRIBUTE_ON_CHANGE = "ATTRIBUTE_ON_CHANGE";
@@ -76,7 +39,7 @@
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            store.dispatch({
+            Redux.store.dispatch({
                 componentId: this.componentId,
                 type: ATTRIBUTE_ON_CHANGE,
                 data: {
@@ -142,7 +105,7 @@
             this.#elements['finishDt'] = this.shadowRoot.querySelector("input[name='finishDt']");
 
             this.#elements["finished"].addEventListener("click", function (e) {
-                store.dispatch({
+                Redux.store.dispatch({
                     componentId: this.componentId,
                     type: FINISHED_ON_CLICK,
                     data: {
@@ -151,7 +114,7 @@
                 });
             }.bind(this), false);
             this.#elements["titleChecked"].addEventListener("click", function (e) {
-                store.dispatch({
+                Redux.store.dispatch({
                     componentId: this.componentId,
                     type: TITLE_CHECKED_ON_CLICK,
                     data: {
@@ -160,7 +123,7 @@
                 });
             }.bind(this), false);
             this.#elements["writerChecked"].addEventListener("click", function (e) {
-                store.dispatch({
+                Redux.store.dispatch({
                     componentId: this.componentId,
                     type: WRITER_CHECKED_ON_CLICK,
                     data: {
@@ -174,7 +137,7 @@
             console.log("connectedCallback");
             this.#bind();
             // this.render();
-            store.dispatch({
+            Redux.store.dispatch({
                 componentId: this.componentId,
                 type: COMPONENT_ON_LOAD
             })
@@ -243,7 +206,7 @@
         }
 
         render() {
-            var state = Redux.queryComponentState(store, this);
+            var state = Redux.queryComponentState(Redux.store, this);
 
             this.#elements["form"].action = state.action;
             this.#elements["finished"].checked = state.finished;
@@ -257,38 +220,7 @@
 
     customElements.define("todo-search-component", TodoSearchComponent);
 
-    function reducer(state, action) {
-        console.log(state, action);
-        if (action.type === "@@INIT") {
-            return;
-        }
 
-        let component = Redux.queryComponent(action);
-        let actionHandler = Redux.queryActionHandler(component, action);
-        let newState;
-        if (actionHandler) {
-            actionHandler(action);
-            newState = Object.assign({}, state, component.getComponentState());
-
-            for(let i = 0; i < Redux.components.length; ++i) {
-                if (i === action.componentId) {
-                    continue;
-                }
-                component = Redux.components[i];
-                actionHandler = Redux.queryActionHandler(component, action);
-                if (actionHandler) {
-                    actionHandler(action);
-                    newState = Object.assign(newState, component.getComponentState());
-                }
-            }
-        }
-        return newState;
-    }
-
-    var store = Redux.createStore(
-        reducer,
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    );
 
 </script>
 <body>
@@ -392,7 +324,7 @@
         addEventListener("load", function (e) {
             const todoSearchComponent = document.querySelector("todo-search-component");
 
-            store.subscribe(todoSearchComponent.render.bind(todoSearchComponent));
+            Redux.store.subscribe(todoSearchComponent.render.bind(todoSearchComponent));
 
             // error 출력
             <c:if test="${error != ''}">
