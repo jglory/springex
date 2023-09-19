@@ -44,6 +44,7 @@
         componentId = null;
     }
 
+    const COMPONENT_ON_LOAD = "COMPONENT_ON_LOAD";
     const ATTRIBUTE_ON_CHANGE = "ATTRIBUTE_ON_CHANGE";
     const FINISHED_ON_CLICK = "FINISHED_ON_CLICK";
     const TITLE_CHECKED_ON_CLICK = "TITLE_CHECKED_ON_CLICK";
@@ -159,11 +160,28 @@
         connectedCallback() {
             console.log("connectedCallback");
             this.#bind();
-            this.render();
+            // this.render();
+            store.dispatch({
+                componentId: this.componentId,
+                type: COMPONENT_ON_LOAD
+            })
+        }
+
+        componentOnLoad(action) {
+            this.#elements["form"].action = this.getAttribute("action");
+            this.#elements["finished"].checked = this.getAttribute("finished") === "true";
+            this.#elements["titleChecked"].checked = this.getAttribute("titleChecked") === "true";
+            this.#elements["writerChecked"].checked = this.getAttribute("writerChecked") === "true";
+            this.#elements["keyword"].value = this.getAttribute("keyword");
+            this.#elements["startDt"].value = this.getAttribute("startDt");
+            this.#elements["finishDt"].value = this.getAttribute("finishDt");
         }
 
         constructor() {
             super();
+
+            this.componentId = Redux.registerWebComponent(this);
+
             this.attachShadow({ mode: 'open'});
 
             // Define the template
@@ -228,16 +246,8 @@
 
     function reducer(state, action) {
         console.log(state, action);
-        if (state === undefined) {
-            return {
-                action: "${searchComponent["action"]}",
-                finished: ${searchComponent["finished"]},
-                titleChecked: ${searchComponent["titleChecked"]},
-                writerChecked: ${searchComponent["writerChecked"]},
-                keyword: "${searchComponent["keyword"]}",
-                startDt: "${searchComponent['startDt']}",
-                finishDt: "${searchComponent['finishDt']}"
-            };
+        if (action.type === "@@INIT") {
+            return;
         }
 
         let component = Redux.queryComponent(action);
