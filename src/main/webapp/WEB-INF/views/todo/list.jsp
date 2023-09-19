@@ -35,6 +35,9 @@
     Redux.queryComponent = function (action) {
         return Redux.components[action.componentId];
     }
+    Redux.queryComponentState = function (store, component) {
+        return store.getState()[component.componentId];
+    }
     Redux.queryActionHandler = function (component, action) {
         const handler = eval("component." + snakeToCamel(action.type));
         return handler ? handler.bind(component) : null;
@@ -42,6 +45,16 @@
 
     class WebComponent extends HTMLElement {
         componentId = null;
+
+        _getComponentState() {
+            throw "WebComponent._getComponentState 를 구현하여 주십시오.";
+        }
+
+        getComponentState() {
+            let state = [];
+            state[this.componentId] = this._getComponentState();
+            return state;
+        }
     }
 
     const COMPONENT_ON_LOAD = "COMPONENT_ON_LOAD";
@@ -50,7 +63,7 @@
     const TITLE_CHECKED_ON_CLICK = "TITLE_CHECKED_ON_CLICK";
     const WRITER_CHECKED_ON_CLICK = "WRITER_CHECKED_ON_CLICK";
 
-    class TodoSearchComponent extends HTMLElement {
+    class TodoSearchComponent extends WebComponent {
         #elements = [];
 
         static get observedAttributes() {
@@ -217,7 +230,7 @@
             // (can be called many times if an element is repeatedly added/removed)
         }
 
-        getState() {
+        _getComponentState() {
             return this.#elements["form"] === undefined ? {} : {
                 action: this.#elements["form"].action,
                 finished: this.#elements["finished"].checked,
@@ -230,7 +243,7 @@
         }
 
         render() {
-            var state = store.getState();
+            var state = Redux.queryComponentState(store, this);
 
             this.#elements["form"].action = state.action;
             this.#elements["finished"].checked = state.finished;
@@ -255,7 +268,7 @@
         let newState;
         if (actionHandler) {
             actionHandler(action);
-            newState = Object.assign({}, state, component.getState());
+            newState = Object.assign({}, state, component.getComponentState());
 
             for(let i = 0; i < Redux.components.length; ++i) {
                 if (i === action.componentId) {
@@ -265,7 +278,7 @@
                 actionHandler = Redux.queryActionHandler(component, action);
                 if (actionHandler) {
                     actionHandler(action);
-                    newState = Object.assign(newState, component.getState());
+                    newState = Object.assign(newState, component.getComponentState());
                 }
             }
         }
