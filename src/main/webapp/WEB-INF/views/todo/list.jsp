@@ -118,9 +118,7 @@
         }, false);
 
         addEventListener("load", function (e) {
-            const todoSearchComponent = document.querySelector("todo-search-component");
-
-            Redux.store.subscribe(todoSearchComponent.render.bind(todoSearchComponent));
+            Redux.subscribeAllComponentsToStore();
 
             // error 출력
             <c:if test="${error != ''}">
