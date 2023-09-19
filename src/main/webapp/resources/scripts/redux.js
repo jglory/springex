@@ -15,8 +15,7 @@ Redux.queryActionHandler = function (component, action) {
     return handler ? handler.bind(component) : null;
 }
 Redux.reducer = function (state, action) {
-    console.log(state, action);
-    if (action.type === "@@INIT") {
+    if (action.hasOwnProperty("componentId") === false) {
         return;
     }
 
