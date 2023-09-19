@@ -1,3 +1,5 @@
+const COMPONENT_ON_LOAD = "COMPONENT_ON_LOAD";  // 컴포넌트 로드
+
 class WebComponent extends HTMLElement {
     componentId = null;
 
