@@ -17,6 +17,38 @@
 <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js"></script>
 <%--<script type="application/javascript" src="/resources/scripts/todo-components.js"></script>--%>
 <script type="application/javascript">
+
+    const snakeToCamel = str =>
+        str.toLowerCase().replace(/([-_][a-z])/g, group =>
+            group
+                .toUpperCase()
+                .replace('-', '')
+                .replace('_', '')
+        );
+
+    Redux.components = [];
+    Redux.componentId = null;
+    Redux.registerWebComponent = function(component) {
+        Redux.components.push(component);
+        return Redux.components.length - 1;
+    }
+    Redux.queryComponent = function (action) {
+        return Redux.components[action.componentId];
+    }
+    Redux.queryActionHandler = function (component, action) {
+        const handler = eval("component." + snakeToCamel(action.type));
+        return handler ? handler.bind(component) : null;
+    }
+
+    class WebComponent extends HTMLElement {
+        componentId = null;
+    }
+
+    const ATTRIBUTE_ON_CHANGE = "ATTRIBUTE_ON_CHANGE";
+    const FINISHED_ON_CLICK = "FINISHED_ON_CLICK";
+    const TITLE_CHECKED_ON_CLICK = "TITLE_CHECKED_ON_CLICK";
+    const WRITER_CHECKED_ON_CLICK = "WRITER_CHECKED_ON_CLICK";
+
     class TodoSearchComponent extends HTMLElement {
         #elements = [];
 
@@ -31,7 +63,8 @@
 
         attributeChangedCallback(name, oldValue, newValue) {
             store.dispatch({
-                type: "onAttributeChanged",
+                componentId: this.componentId,
+                type: ATTRIBUTE_ON_CHANGE,
                 data: {
                     name: name,
                     oldValue: oldValue,
@@ -40,7 +73,7 @@
             });
         }
 
-        onAttributeChanged(action) {
+        attributeOnChange(action) {
             if (this.#elements["form"] !== undefined) {
                 switch (action.data.name) {
                     case "action":
@@ -72,6 +105,18 @@
             }
         }
 
+        finishedOnClick(action) {
+
+        }
+
+        titleCheckedOnClick(action) {
+
+        }
+
+        writerCheckedOnClick(action) {
+
+        }
+
         #bind() {
             console.log("#bind");
             this.#elements['form'] = this.shadowRoot.querySelector("form");
@@ -83,13 +128,31 @@
             this.#elements['finishDt'] = this.shadowRoot.querySelector("input[name='finishDt']");
 
             this.#elements["finished"].addEventListener("click", function (e) {
-                this.dispatch();
+                store.dispatch({
+                    componentId: this.componentId,
+                    type: FINISHED_ON_CLICK,
+                    data: {
+                        titleChecked: this.#elements['finished'].checked,
+                    }
+                });
             }.bind(this), false);
             this.#elements["titleChecked"].addEventListener("click", function (e) {
-                this.dispatch();
+                store.dispatch({
+                    componentId: this.componentId,
+                    type: TITLE_CHECKED_ON_CLICK,
+                    data: {
+                        titleChecked: this.#elements['titleChecked'].checked,
+                    }
+                });
             }.bind(this), false);
             this.#elements["writerChecked"].addEventListener("click", function (e) {
-                this.dispatch();
+                store.dispatch({
+                    componentId: this.componentId,
+                    type: WRITER_CHECKED_ON_CLICK,
+                    data: {
+                        titleChecked: this.#elements['writerChecked'].checked,
+                    }
+                });
             }.bind(this), false);
         }
 
@@ -136,25 +199,8 @@
             // (can be called many times if an element is repeatedly added/removed)
         }
 
-        dispatch() {
-            store.dispatch(
-                {
-                    type: "STATE_HAS_CHANGED",
-                    data: {
-                        action: this.#elements["form"].action,
-                        finished: this.#elements["finished"].checked,
-                        titleChecked: this.#elements["titleChecked"].checked,
-                        writerChecked: this.#elements["writerChecked"].checked,
-                        keyword: this.#elements["keyword"].value,
-                        startDt: this.#elements["startDt"].value,
-                        finishDt: this.#elements["finishDt"].value
-                    }
-                }
-            );
-        }
-
         getState() {
-            return {
+            return this.#elements["form"] === undefined ? {} : {
                 action: this.#elements["form"].action,
                 finished: this.#elements["finished"].checked,
                 titleChecked: this.#elements["title-checked"].checked,
@@ -194,14 +240,24 @@
             };
         }
 
+        let component = Redux.queryComponent(action);
+        let actionHandler = Redux.queryActionHandler(component, action);
         let newState;
-        if (action.type === "onAttributeChanged") {
-            const component = document.querySelector("todo-search-component");
-            component.onAttributeChanged(action);
+        if (actionHandler) {
+            actionHandler(action);
             newState = Object.assign({}, state, component.getState());
-        }
-        if (action.type === "STATE_HAS_CHANGED") {
-            newState = Object.assign({}, state, action.data);
+
+            for(let i = 0; i < Redux.components.length; ++i) {
+                if (i === action.componentId) {
+                    continue;
+                }
+                component = Redux.components[i];
+                actionHandler = Redux.queryActionHandler(component, action);
+                if (actionHandler) {
+                    actionHandler(action);
+                    newState = Object.assign(newState, component.getState());
+                }
+            }
         }
         return newState;
     }
@@ -219,7 +275,7 @@
         <div class="col">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"> 日常茶槃思</a></span>
+                    <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">日常茶槃思</a></span>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
