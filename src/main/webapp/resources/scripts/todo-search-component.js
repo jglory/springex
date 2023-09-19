@@ -130,7 +130,8 @@ class TodoSearchComponent extends WebComponent {
     constructor() {
         super();
 
-        this.componentId = Redux.registerWebComponent(this);
+        // 모든 WebComponent 는 반드시 Redux 에 등록해야 함.
+        this.componentId = Redux.registerComponent(this);
 
         this.attachShadow({ mode: 'open'});
 

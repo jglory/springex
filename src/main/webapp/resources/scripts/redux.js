@@ -1,6 +1,6 @@
 Redux.components = [];
 Redux.componentId = null;
-Redux.registerWebComponent = function(component) {
+Redux.registerComponent = function(component) {
     Redux.components.push(component);
     return Redux.components.length - 1;
 }
