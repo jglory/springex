@@ -48,8 +48,8 @@ public class TodoController {
         searchComponent.put("title-checked", Arrays.asList(pageRequestDto.getTypes()).contains("t") ? "true" : "false");
         searchComponent.put("writer-checked", Arrays.asList(pageRequestDto.getTypes()).contains("w") ? "true" : "false");
         searchComponent.put("keyword", pageRequestDto.getKeyword());
-        searchComponent.put("start-dt",  pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        searchComponent.put("finish-dt", pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        searchComponent.put("start-dt",  pageRequestDto.getStartDt() == null ? null : pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        searchComponent.put("finish-dt", pageRequestDto.getFinishDt() == null ? null : pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         model.addAttribute("searchComponent", searchComponent);
 
         model.addAttribute("error", error);
