@@ -1,7 +1,5 @@
 package page.aaws.springex.controller.exception;
 
-import java.util.Arrays;
-
 import lombok.extern.log4j.Log4j2;
 
 import org.springframework.beans.ConversionNotSupportedException;
@@ -24,21 +22,21 @@ public class CommonExceptionAdvice {
         return "ConversionNotSupportedException: Failed to convert";
     }
 
-    @ResponseBody
-    @ExceptionHandler(Exception.class)
-    public String handleException(Exception e) {
-        log.error("--------------------------------------------------------------------------------");
-        log.error(e.getMessage());
-
-        StringBuffer buffer = new StringBuffer("<ul>");
-        buffer.append("<li>" + e.getMessage() + "</li>");
-        Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> {
-            buffer.append("<li>" + stackTraceElement + "</li>");
-        });
-        buffer.append("</ul>");
-
-        return buffer.toString();
-    }
+//    @ResponseBody
+//    @ExceptionHandler(Exception.class)
+//    public String handleException(Exception e) {
+//        log.error("--------------------------------------------------------------------------------");
+//        log.error(e.getMessage());
+//
+//        StringBuffer buffer = new StringBuffer("<ul>");
+//        buffer.append("<li>" + e.getMessage() + "</li>");
+//        Arrays.stream(e.getStackTrace()).forEach(stackTraceElement -> {
+//            buffer.append("<li>" + stackTraceElement + "</li>");
+//        });
+//        buffer.append("</ul>");
+//
+//        return buffer.toString();
+//    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
