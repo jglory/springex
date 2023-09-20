@@ -7,7 +7,7 @@
 
     <sql id="search">
         <where>
-            <if test="types != null and types.length > 0">
+            <if test="keyword != '' and types != null and types.length > 0">
                 <foreach collection="types" item="type" open="(" close=")" separator=" OR ">
                     <choose>
                         <when test="type == 't'.toString()">
