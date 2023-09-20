@@ -4,6 +4,7 @@ const TITLE_CHECKED_ON_CLICK = "TITLE_CHECKED_ON_CLICK";
 const WRITER_CHECKED_ON_CLICK = "WRITER_CHECKED_ON_CLICK";
 
 class TodoSearchComponent extends WebComponent {
+    #loaded = false;
     #elements = [];
 
     static get observedAttributes() {
@@ -28,7 +29,7 @@ class TodoSearchComponent extends WebComponent {
     }
 
     attributeOnChange(action) {
-        if (this.#elements["form"] !== undefined) {
+        if (this.#loaded) {
             switch (action.data.name) {
                 case "action":
                     this.#elements["form"].action = this.getAttribute("action");
@@ -125,6 +126,8 @@ class TodoSearchComponent extends WebComponent {
         this.#elements["keyword"].value = this.getAttribute("keyword");
         this.#elements["startDt"].value = this.getAttribute("startDt");
         this.#elements["finishDt"].value = this.getAttribute("finishDt");
+
+        this.#loaded = true;
     }
 
     constructor() {
@@ -169,7 +172,7 @@ class TodoSearchComponent extends WebComponent {
     }
 
     _getComponentState() {
-        return this.#elements["form"] === undefined ? {} : {
+        return this.#loaded ? {
             action: this.#elements["form"].action,
             finished: this.#elements["finished"].checked,
             titleChecked: this.#elements["titleChecked"].checked,
@@ -177,7 +180,7 @@ class TodoSearchComponent extends WebComponent {
             keyword: this.#elements["keyword"].value,
             startDt: this.#elements["startDt"].value,
             finishDt: this.#elements["finishDt"].value
-        };
+        } : {};
     }
 
     render() {
