@@ -107,7 +107,7 @@
                         <input type="checkbox" name="types" value="w"> 작성자
                         <input type="text" name="keyword" class="form-control" value="">
                     </div>
-                    <div class="input-group mb-3 dueDateDiv">
+                    <div class="input-group mb-3 dueDtDiv">
                         <input type="date" name="startDt" class="form-control">
                         <input type="date" name="finishDt" class="form-control">
                     </div>
@@ -233,7 +233,7 @@
                                 <th scope="row"><c:out value="${item.tno}"/></th>
                                 <td><a href="/todo/read?tno=${item.tno}&page=${pageDto.page}&size=${pageDto.size}" class="text-docoration-none"><c:out value="${item.title}"/></a></td>
                                 <td><c:out value="${item.writer}"/></td>
-                                <td><c:out value="${item.dueDate}"/></td>
+                                <td><c:out value="${item.dueDt}"/></td>
                                 <td><c:out value="${item.finished}"/></td>
                             </tr>
                         </c:forEach>

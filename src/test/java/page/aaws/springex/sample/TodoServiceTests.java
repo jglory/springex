@@ -37,7 +37,7 @@ public class TodoServiceTests {
     public void testRegister() {
         todoService.register(TodoDto.builder()
                 .title("test")
-                .dueDate(LocalDate.now())
+                .dueDt(LocalDate.now())
                 .writer("user01")
                 .build());
     }

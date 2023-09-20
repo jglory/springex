@@ -23,7 +23,7 @@
         <div class="col">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><a href=" href="#"><img src="/resources/green-tea.png" width="20" height="20"> 日常茶槃思</a></span>
+                    <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">日常茶槃思</a></span>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -53,7 +53,7 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">일정</span>
-                            <input type="date" name="dueDate" class="form-control" placeholder="">
+                            <input type="date" name="dueDt" class="form-control" placeholder="">
                         </div>
 
                         <div class="input-group mb-3">
@@ -86,7 +86,7 @@
             <p class="text-center text-muted">Footer</p>
         </footer>
     </div>
-
+</div>
 
     <script src="/resources/bootstrap.bundle.min.js"></script>
 </body>

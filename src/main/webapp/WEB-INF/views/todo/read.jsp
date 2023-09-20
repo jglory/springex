@@ -22,7 +22,7 @@
     <div class="col">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <span class="navbar-brand"><a href=" href="#"><img src="/resources/green-tea.png" width="20" height="20"> 日常茶槃思</a></span>
+          <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">日常茶槃思</a></span>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -55,7 +55,7 @@
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">DueDate</span>
-            <input type="date" name="dueDate" class="form-control" value="<c:out value="${dto.dueDate}"></c:out>" readonly>
+            <input type="date" name="dueDt" class="form-control" value="<c:out value="${dto.dueDt}"></c:out>" readonly>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Writer</span>
@@ -85,7 +85,7 @@
       <p class="text-center text-muted">Footer</p>
     </footer>
   </div>
-
+</div>
 
   <script src="/resources/bootstrap.bundle.min.js"></script>
   <script type="application/javascript">

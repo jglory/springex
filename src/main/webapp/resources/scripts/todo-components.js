@@ -21,7 +21,7 @@ class TodoSearchComponent extends HTMLElement {
                         <input type="checkbox" name="types" value="w"> 작성자
                         <input type="text" name="keyword" class="form-control" value="">
                     </div>
-                    <div class="input-group mb-3 dueDateDiv">
+                    <div class="input-group mb-3 dueDtDiv">
                         <input type="date" name="start-dt" class="form-control">
                         <input type="date" name="finish-dt" class="form-control">
                     </div>

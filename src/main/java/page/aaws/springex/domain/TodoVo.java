@@ -12,7 +12,7 @@ import lombok.*;
 public class TodoVo {
     private Long tno;
     private String title;
-    private LocalDate dueDate;
+    private LocalDate dueDt;
     private String writer;
     private boolean finished;
 }
