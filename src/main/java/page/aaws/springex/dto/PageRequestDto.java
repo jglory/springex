@@ -24,11 +24,11 @@ public class PageRequestDto {
     @Positive
     private int size = 10;
 
-    private String[] types;
+    private String[] types = {};
 
-    private String keyword;
+    private String keyword = "";
 
-    private boolean finished;
+    private boolean finished = false;
 
     private LocalDate from;
 
