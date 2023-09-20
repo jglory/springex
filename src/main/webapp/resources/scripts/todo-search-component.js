@@ -7,7 +7,7 @@ class TodoSearchComponent extends WebComponent {
     #elements = [];
 
     static get observedAttributes() {
-        return ['action', 'finished', 'title-checked', 'writer-checked', 'keyword', 'start-date', 'finish-date']
+        return ['action', 'finished', 'titleChecked', 'writerChecked', 'keyword', 'startDt', 'finishDt']
     }
 
     adoptedCallback() {
@@ -34,25 +34,25 @@ class TodoSearchComponent extends WebComponent {
                     this.#elements["form"].action = this.getAttribute("action");
                     break;
                 case "finished":
-                    this.#elements["finished"].checked = this.getAttribute("finished") == "true";
+                    this.#elements["finished"].checked = this.getAttribute("finished") === "true";
                     break;
-                case "title-checked":
-                    this.#elements["title-checked"].checked = this.getAttribute("title-checked") == "true";
+                case "titleChecked":
+                    this.#elements["titleChecked"].checked = this.getAttribute("titleChecked") === "true";
                     break;
-                case "writer-checked":
-                    this.#elements["writer-checked"].checked = this.getAttribute("writer-checked") == "true";
+                case "writerChecked":
+                    this.#elements["writerChecked"].checked = this.getAttribute("writerChecked") === "true";
                     break;
                 case "keyword":
                     this.#elements["keyword"].value = this.getAttribute("keyword");
                     break;
-                case "start-date":
-                    if (this.getAttribute("start-date")) {
-                        this.#elements["start-date"].value = this.getAttribute("start-date");
+                case "startDt":
+                    if (this.getAttribute("startDt")) {
+                        this.#elements["startDt"].value = this.getAttribute("startDt");
                     }
                     break;
-                case "finish-date":
-                    if (this.getAttribute("finish-date")) {
-                        this.#elements["finish-date"].value = this.getAttribute("finish-date");
+                case "finishDt":
+                    if (this.getAttribute("finishDt")) {
+                        this.#elements["finishDt"].value = this.getAttribute("finishDt");
                     }
                     break;
             }
@@ -74,11 +74,11 @@ class TodoSearchComponent extends WebComponent {
     #bind() {
         this.#elements['form'] = this.shadowRoot.querySelector("form");
         this.#elements['finished'] = this.shadowRoot.querySelector("input[name='finished']");
-        this.#elements['title-checked'] = this.shadowRoot.querySelector("input[name='types'][value='t']");
-        this.#elements['writer-checked'] = this.shadowRoot.querySelector("input[name='types'][value='w']");
+        this.#elements['titleChecked'] = this.shadowRoot.querySelector("input[name='types'][value='t']");
+        this.#elements['writerChecked'] = this.shadowRoot.querySelector("input[name='types'][value='w']");
         this.#elements['keyword'] = this.shadowRoot.querySelector("input[name='keyword']");
-        this.#elements['start-date'] = this.shadowRoot.querySelector("input[name='from']");
-        this.#elements['finish-date'] = this.shadowRoot.querySelector("input[name='to']");
+        this.#elements['startDt'] = this.shadowRoot.querySelector("input[name='startDt']");
+        this.#elements['finishDt'] = this.shadowRoot.querySelector("input[name='finishDt']");
 
         this.#elements["finished"].addEventListener("click", function (e) {
             Redux.store.dispatch({
@@ -89,21 +89,21 @@ class TodoSearchComponent extends WebComponent {
                 }
             });
         }.bind(this), false);
-        this.#elements["title-checked"].addEventListener("click", function (e) {
+        this.#elements["titleChecked"].addEventListener("click", function (e) {
             Redux.store.dispatch({
                 componentId: this.componentId,
                 type: TITLE_CHECKED_ON_CLICK,
                 data: {
-                    titleChecked: this.#elements['title-checked'].checked,
+                    titleChecked: this.#elements['titleChecked'].checked,
                 }
             });
         }.bind(this), false);
-        this.#elements["writer-checked"].addEventListener("click", function (e) {
+        this.#elements["writerChecked"].addEventListener("click", function (e) {
             Redux.store.dispatch({
                 componentId: this.componentId,
                 type: WRITER_CHECKED_ON_CLICK,
                 data: {
-                    titleChecked: this.#elements['writer-checked'].checked,
+                    titleChecked: this.#elements['writerChecked'].checked,
                 }
             });
         }.bind(this), false);
@@ -120,11 +120,11 @@ class TodoSearchComponent extends WebComponent {
     componentOnLoad(action) {
         this.#elements["form"].action = this.getAttribute("action");
         this.#elements["finished"].checked = this.getAttribute("finished") === "true";
-        this.#elements["title-checked"].checked = this.getAttribute("title-checked") === "true";
-        this.#elements["writer-checked"].checked = this.getAttribute("writer-checked") === "true";
+        this.#elements["titleChecked"].checked = this.getAttribute("titleChecked") === "true";
+        this.#elements["writerChecked"].checked = this.getAttribute("writerChecked") === "true";
         this.#elements["keyword"].value = this.getAttribute("keyword");
-        this.#elements["start-date"].value = this.getAttribute("start-date");
-        this.#elements["finish-date"].value = this.getAttribute("finish-date");
+        this.#elements["startDt"].value = this.getAttribute("startDt");
+        this.#elements["finishDt"].value = this.getAttribute("finishDt");
     }
 
     constructor() {
@@ -149,8 +149,8 @@ class TodoSearchComponent extends WebComponent {
                         <input type="text" name="keyword" class="form-control" value="">
                     </div>
                     <div class="input-group mb-3 dueDateDiv">
-                        <input type="date" name="from" class="form-control">
-                        <input type="date" name="to" class="form-control">
+                        <input type="date" name="startDt" class="form-control">
+                        <input type="date" name="finishDt" class="form-control">
                     </div>
                     <div class="input-group mb-3">
                         <div class="float-end">
@@ -172,11 +172,11 @@ class TodoSearchComponent extends WebComponent {
         return this.#elements["form"] === undefined ? {} : {
             action: this.#elements["form"].action,
             finished: this.#elements["finished"].checked,
-            titleChecked: this.#elements["title-checked"].checked,
-            writerChecked: this.#elements["writer-checked"].checked,
+            titleChecked: this.#elements["titleChecked"].checked,
+            writerChecked: this.#elements["writerChecked"].checked,
             keyword: this.#elements["keyword"].value,
-            startDate: this.#elements["start-date"].value,
-            finishDate: this.#elements["finish-date"].value
+            startDt: this.#elements["startDt"].value,
+            finishDt: this.#elements["finishDt"].value
         };
     }
 
@@ -185,12 +185,12 @@ class TodoSearchComponent extends WebComponent {
 
         this.#elements["form"].action = state.action;
         this.#elements["finished"].checked = state.finished;
-        this.#elements["title-checked"].checked = state.titleChecked;
-        this.#elements["writer-checked"].checked = state.writerChecked;
+        this.#elements["titleChecked"].checked = state.titleChecked;
+        this.#elements["writerChecked"].checked = state.writerChecked;
         this.#elements["keyword"].value = state.keyword;
-        this.#elements["start-date"].value = state.startDate;
-        this.#elements["finish-date"].value = state.finishDate;
+        this.#elements["startDt"].value = state.startDt;
+        this.#elements["finishDt"].value = state.finishDt;
     }
 }
 
-customElements.define("todo-search", TodoSearchComponent);
+customElements.define("todo-search-component", TodoSearchComponent);
