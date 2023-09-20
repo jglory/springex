@@ -33,13 +33,16 @@ public class TodoController {
                      BindingResult bindingResult,
                      Model model) {
         log.info("GET /todo/list: " + pageRequestDto);
+
+        String error = "";
         if (bindingResult.hasErrors()) {
             pageRequestDto = PageRequestDto.builder().build();
+            error = bindingResult.getAllErrors().get(0).toString();
         }
 
         model.addAttribute("pageDto", todoService.list(pageRequestDto));
 
-        HashMap<String, String> searchComponent = new HashMap<String, String>();
+        HashMap<String, String> searchComponent = new HashMap<>();
         searchComponent.put("action", "/todo/list?size=" + pageRequestDto.getSize());
         searchComponent.put("finished", pageRequestDto.isFinished() ? "true" : "false");
         searchComponent.put("title-checked", Arrays.asList(pageRequestDto.getTypes()).contains("t") ? "true" : "false");
@@ -48,6 +51,8 @@ public class TodoController {
         searchComponent.put("start-date",  pageRequestDto.getFrom().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         searchComponent.put("finish-date", pageRequestDto.getTo().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         model.addAttribute("searchComponent", searchComponent);
+
+        model.addAttribute("error", error);
     }
 
     @PostMapping("/modify")
