@@ -56,8 +56,8 @@ public class TodoMapperTests {
                         .types(new String[]{"t", "w"})
                         .keyword("user00")
                         .finished(false)
-                        .from(LocalDate.of(2023,10,10))
-                        .to(LocalDate.of(2023, 10, 17))
+                        .startDt(LocalDate.of(2023,10,10))
+                        .finishDt(LocalDate.of(2023, 10, 17))
                         .build()
         ).forEach(log::info);
     }

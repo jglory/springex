@@ -1,6 +1,6 @@
 class TodoSearchComponent extends HTMLElement {
     static get observedAttributes() {
-        return ['action', 'page-size', 'finished', 'title-checked', 'writer-checked', 'keyword', 'start-date', 'finish-date']
+        return ['action', 'page-size', 'finished', 'title-checked', 'writer-checked', 'keyword', 'start-dt', 'finish-dt']
     }
 
     constructor() {
@@ -22,8 +22,8 @@ class TodoSearchComponent extends HTMLElement {
                         <input type="text" name="keyword" class="form-control" value="">
                     </div>
                     <div class="input-group mb-3 dueDateDiv">
-                        <input type="date" name="from" class="form-control">
-                        <input type="date" name="to" class="form-control">
+                        <input type="date" name="start-dt" class="form-control">
+                        <input type="date" name="finish-dt" class="form-control">
                     </div>
                     <div class="input-group mb-3">
                         <div class="float-end">
@@ -55,14 +55,14 @@ class TodoSearchComponent extends HTMLElement {
         ref = this.shadowRoot.querySelector("input[name='keyword']");
         ref.value = this.getAttribute("keyword");
 
-        ref = this.shadowRoot.querySelector("input[name='from']");
-        if (this.getAttribute("start-date")) {
-            ref.value = this.getAttribute("start-date");
+        ref = this.shadowRoot.querySelector("input[name='finish-dt']");
+        if (this.getAttribute("start-dt")) {
+            ref.value = this.getAttribute("start-dt");
         }
 
-        ref = this.shadowRoot.querySelector("input[name='to']");
-        if (this.getAttribute("finish-date")) {
-            ref.value = this.getAttribute("finish-date");
+        ref = this.shadowRoot.querySelector("input[name='finish-dt']");
+        if (this.getAttribute("finish-dt")) {
+            ref.value = this.getAttribute("finish-dt");
         }
     }
 
@@ -93,14 +93,14 @@ class TodoSearchComponent extends HTMLElement {
             case "keyword":
                 this.shadowRoot.querySelector("input[name='keyword']").value = this.getAttribute("keyword");
                 break;
-            case "start-date":
-                if (this.getAttribute("start-date")) {
-                    this.shadowRoot.querySelector("input[name='from']").value = this.getAttribute("start-date");
+            case "start-dt":
+                if (this.getAttribute("start-dt")) {
+                    this.shadowRoot.querySelector("input[name='start-dt']").value = this.getAttribute("start-dt");
                 }
                 break;
-            case "finish-date":
-                if (this.getAttribute("finish-date")) {
-                    this.shadowRoot.querySelector("input[name='to']").value = this.getAttribute("finish-date");
+            case "finish-dt":
+                if (this.getAttribute("finish-dt")) {
+                    this.shadowRoot.querySelector("input[name='finish-dt']").value = this.getAttribute("finish-dt");
                 }
                 break;
         }

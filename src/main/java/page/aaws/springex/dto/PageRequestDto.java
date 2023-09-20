@@ -30,9 +30,9 @@ public class PageRequestDto {
 
     private boolean finished = false;
 
-    private LocalDate from;
+    private LocalDate startDt;
 
-    private LocalDate to;
+    private LocalDate finishDt;
 
     public int getSkip() {
         return (page - 1) * size;

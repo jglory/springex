@@ -26,9 +26,9 @@
                 </trim>
             </if>
 
-            <if test="from != null and to != null">
+            <if test="startDt != null and finishDt != null">
                 <trim prefix="and">
-                    dueDate between #{from} and #{to}
+                    dueDate between #{startDt} and #{finishDt}
                 </trim>
             </if>
         </where>

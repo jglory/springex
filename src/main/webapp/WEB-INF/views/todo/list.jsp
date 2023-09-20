@@ -21,7 +21,7 @@
         #elements = [];
 
         static get observedAttributes() {
-            return ['action', 'finished', 'title-checked', 'writer-checked', 'keyword', 'start-date', 'finish-date']
+            return ['action', 'finished', 'title-checked', 'writer-checked', 'keyword', 'start-dt', 'finish-dt']
         }
 
         adoptedCallback() {
@@ -48,14 +48,14 @@
                     case "keyword":
                         this.#elements["keyword"].value = this.getAttribute("keyword");
                         break;
-                    case "start-date":
-                        if (this.getAttribute("start-date")) {
-                            this.#elements["start-date"].value = this.getAttribute("start-date");
+                    case "start-dt":
+                        if (this.getAttribute("start-dt")) {
+                            this.#elements["start-dt"].value = this.getAttribute("start-dt");
                         }
                         break;
-                    case "finish-date":
-                        if (this.getAttribute("finish-date")) {
-                            this.#elements["finish-date"].value = this.getAttribute("finish-date");
+                    case "finish-dt":
+                        if (this.getAttribute("finish-dt")) {
+                            this.#elements["finish-dt"].value = this.getAttribute("finish-dt");
                         }
                         break;
                 }
@@ -70,8 +70,8 @@
             this.#elements['title-checked'] = this.shadowRoot.querySelector("input[name='types'][value='t']");
             this.#elements['writer-checked'] = this.shadowRoot.querySelector("input[name='types'][value='w']");
             this.#elements['keyword'] = this.shadowRoot.querySelector("input[name='keyword']");
-            this.#elements['start-date'] = this.shadowRoot.querySelector("input[name='from']");
-            this.#elements['finish-date'] = this.shadowRoot.querySelector("input[name='to']");
+            this.#elements['start-dt'] = this.shadowRoot.querySelector("input[name='start-dt']");
+            this.#elements['finish-dt'] = this.shadowRoot.querySelector("input[name='finish-dt']");
 
             this.#elements["finished"].addEventListener("click", function (e) {
                 this.dispatch();
@@ -108,8 +108,8 @@
                         <input type="text" name="keyword" class="form-control" value="">
                     </div>
                     <div class="input-group mb-3 dueDateDiv">
-                        <input type="date" name="from" class="form-control">
-                        <input type="date" name="to" class="form-control">
+                        <input type="date" name="start-dt" class="form-control">
+                        <input type="date" name="finish-dt" class="form-control">
                     </div>
                     <div class="input-group mb-3">
                         <div class="float-end">
@@ -137,8 +137,8 @@
                         titleChecked: this.#elements["title-checked"].checked,
                         writerChecked: this.#elements["writer-checked"].checked,
                         keyword: this.#elements["keyword"].value,
-                        startDate: this.#elements["start-date"].value,
-                        finishDate: this.#elements["finish-date"].value
+                        startDt: this.#elements["start-dt"].value,
+                        finishDt: this.#elements["finish-dt"].value
                     }
                 }
             );
@@ -152,8 +152,8 @@
             this.#elements["title-checked"].checked = state.titleChecked;
             this.#elements["writer-checked"].checked = state.writerChecked;
             this.#elements["keyword"].value = state.keyword;
-            this.#elements["start-date"].value = state.startDate;
-            this.#elements["finish-date"].value = state.finishDate;
+            this.#elements["start-dt"].value = state.startDt;
+            this.#elements["finish-dt"].value = state.finishDt;
         }
     }
 
@@ -168,8 +168,8 @@
                 titleChecked: ${searchComponent["title-checked"]},
                 writerChecked: ${searchComponent["writer-checked"]},
                 keyword: "${searchComponent["keyword"]}",
-                startDate: "${searchComponent['start-date']}",
-                finishDate: "${searchComponent['finish-date']}"
+                startDt: "${searchComponent['start-dt']}",
+                finishDt: "${searchComponent['finish-dt']}"
             };
         }
 
@@ -216,7 +216,7 @@
                 <div class="card-header">Featured</div>
                 <div class="card-body">
                     <h5 class="card-title">Special title treatment</h5>
-                    <todo-search-component action="${searchComponent['action']}", page-size="${searchComponent['page-size']}", finished="${searchComponent['finished']}", title-checked="${searchComponent['title-checked']}", writer-checked="${searchComponent['writer-checked']}", keyword="${searchComponent['keyword']}", start-date="${searchComponent['start-date']}", finish-date="${searchComponent['finish-date']}"></todo-search-component>
+                    <todo-search-component action="${searchComponent['action']}", page-size="${searchComponent['page-size']}", finished="${searchComponent['finished']}", title-checked="${searchComponent['title-checked']}", writer-checked="${searchComponent['writer-checked']}", keyword="${searchComponent['keyword']}", start-dt="${searchComponent['start-dt']}", finish-dt="${searchComponent['finish-dt']}"></todo-search-component>
                     <table class="table">
                         <thead>
                         <tr>
