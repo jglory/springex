@@ -19,6 +19,145 @@
 <script type="application/javascript" src="/resources/scripts/redux.js"></script>
 <script type="application/javascript" src="/resources/scripts/web-component.js"></script>
 <script type="application/javascript" src="/resources/scripts/todo-search-component.js"></script>
+<script type="application/javascript">
+
+    class TodoPageNavigatorComponent extends WebComponent {
+        #loaded = false;
+        #elements = [];
+
+        static get observedAttributes() {
+            return ['start', 'end', 'current', 'count', 'url']
+        }
+
+        constructor() {
+            super();
+
+            // 모든 WebComponent 는 반드시 Redux 에 등록해야 함.
+            this.componentId = Redux.registerComponent(this);
+
+            this.attachShadow({ mode: 'open'});
+
+            // Define the template
+            const template = document.createElement("template");
+            template.innerHTML = `
+                <link href="/resources/bootstrap.min.css" rel="stylesheet">
+                <div class="float-end">
+                    <ul class="pagination flex-wrap">
+
+                    </ul>
+                </div>
+                `;
+            this.shadowRoot.appendChild(template.content.cloneNode(true));
+        }
+
+        connectedCallback() {
+            this.#bind();
+            Redux.store.dispatch({
+                componentId: this.componentId,
+                type: COMPONENT_ON_LOAD
+            })
+        }
+
+        #bind() {
+
+        }
+
+        componentOnLoad(action) {
+            let prev = "";
+            let next = "";
+            let pages = "";
+
+            const start = parseInt(this.getAttribute("start"));
+            const end = parseInt(this.getAttribute("end"));
+            const current = parseInt(this.getAttribute("current"));
+            const count = parseInt(this.getAttribute("count"));
+            const url = this.getAttribute("url");
+
+            if (start > 1) {
+                prev = `
+                <li class="page-item">
+                    <a class="page-link" data-num="\${start - 1}">이전</a>
+                </li>
+                `;
+            }
+            if (end < count) {
+                next = `
+                <li class="page-item">
+                    <a class="page-link" data-num="\${end + 1}">다음</a>
+                </li>
+                `;
+            }
+
+            for (let i = start; i <= end; ++i) {
+                pages += `
+                <li class="page-item"><a class="page-link` + (i === current ? " active" : "") + `" href="` + url.replace("###", i) + `">\${i}</a></li>
+                `;
+            }
+
+            this.shadowRoot.innerHTML = `
+                <link href="/resources/bootstrap.min.css" rel="stylesheet">
+                <div class="float-end">
+                    <ul class="pagination flex-wrap">
+                `
+                + prev
+                + pages
+                + next
+                + `
+                    </ul>
+                </div>
+                `;
+            this.#loaded = true;
+        }
+
+        adoptedCallback() {
+            // called when the element is moved to a new document
+            // (happens in document.adoptNode, very rarely used)
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            Redux.store.dispatch({
+                componentId: this.componentId,
+                type: ATTRIBUTE_ON_CHANGE,
+                data: {
+                    name: name,
+                    oldValue: oldValue,
+                    newValue: newValue,
+                }
+            });
+        }
+
+        attributeOnChange(action) {
+            if (this.#loaded) {
+                switch (action.data.name) {
+                    case "start":
+                        // this.#elements["start"].action = this.getAttribute("start");
+                        break;
+                    case "end":
+                        // this.#elements["end"].checked = this.getAttribute("end") === "true";
+                        break;
+                    case "count":
+                        // this.#elements["count"].checked = this.getAttribute("count") === "true";
+                        break;
+                    case "url":
+                        // this.#elements["url"].checked = this.getAttribute("url") === "true";
+                        break;
+                }
+            }
+        }
+
+        _getComponentState() {
+            return this.#loaded ? {
+
+            } : {};
+        }
+
+        render() {
+            var state = Redux.queryComponentState(Redux.store, this);
+        }
+    }
+
+    customElements.define("todo-page-navigator-component", TodoPageNavigatorComponent);
+</script>
 <body>
 <div class="container-fluid">
     <!-- HEADER -->
@@ -72,26 +211,7 @@
                         </c:forEach>
                         </tbody>
                     </table>
-
-                    <div class="float-end">
-                        <ul class="pagination flex-wrap">
-                            <c:if test="${pageDto.prev}">
-                                <li class="page-item">
-                                    <a class="page-link" data-num="${pageDto.start - 1}">이전</a>
-                                </li>
-                            </c:if>
-
-                            <c:forEach begin="${pageDto.start}" end="${pageDto.end}" var="pageNo">
-                                <li class="page-item"><a class="page-link${pageDto.page == pageNo ? " active" : ""}" data-num="${pageNo}">${pageNo}</a></li>
-                            </c:forEach>
-
-                            <c:if test="${pageDto.next}">
-                                <li class="page-item">
-                                    <a class="page-link" data-num="${pageDto.end + 1}">다음</a>
-                                </li>
-                            </c:if>
-                        </ul>
-                    </div>
+                    <todo-page-navigator-component start="${pageNavigatorComponent.start}" end="${pageNavigatorComponent.end}" current="${pageNavigatorComponent.current}" count="${pageNavigatorComponent.count}" url="${pageNavigatorComponent.url}"></todo-page-navigator-component>
                 </div>
             </div>
         </div>
@@ -106,17 +226,6 @@
 
     <script src="/resources/bootstrap.bundle.min.js"></script>
     <script type="application/javascript">
-        document.querySelector(".pagination").addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            if (e.target.tagName !== "A") {
-                return;
-            }
-
-            self.location = "/todo/list?page=" + e.target.getAttribute("data-num");
-        }, false);
-
         addEventListener("load", function (e) {
             Redux.subscribeAllComponentsToStore();
 

@@ -2,6 +2,8 @@ package page.aaws.springex.controller;
 
 import jakarta.validation.Valid;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import lombok.RequiredArgsConstructor;
 
 import page.aaws.springex.dto.PageRequestDto;
+import page.aaws.springex.dto.PageResponseDto;
 import page.aaws.springex.dto.TodoDto;
 import page.aaws.springex.service.TodoService;
 
@@ -31,7 +34,7 @@ public class TodoController {
     @GetMapping("/list")
     public void list(@Valid PageRequestDto pageRequestDto,
                      BindingResult bindingResult,
-                     Model model) {
+                     Model model) throws UnsupportedEncodingException {
         log.info("GET /todo/list: " + pageRequestDto);
 
         String error = "";
@@ -40,7 +43,8 @@ public class TodoController {
             error = bindingResult.getAllErrors().get(0).toString();
         }
 
-        model.addAttribute("pageDto", todoService.list(pageRequestDto));
+        PageResponseDto<TodoDto> pageResponseDto = todoService.list(pageRequestDto);
+        model.addAttribute("pageDto", pageResponseDto);
 
         HashMap<String, String> searchComponent = new HashMap<>();
         searchComponent.put("action", "/todo/list?size=" + pageRequestDto.getSize());
@@ -51,6 +55,24 @@ public class TodoController {
         searchComponent.put("startDt",  pageRequestDto.getStartDt() == null ? null : pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         searchComponent.put("finishDt", pageRequestDto.getFinishDt() == null ? null : pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         model.addAttribute("searchComponent", searchComponent);
+
+
+        HashMap<String, String> pageNavigatorComponent = new HashMap<>();
+        pageNavigatorComponent.put("start", String.valueOf(pageResponseDto.getStart()));
+        pageNavigatorComponent.put("end", String.valueOf(pageResponseDto.getEnd()));
+        pageNavigatorComponent.put("current", String.valueOf(pageResponseDto.getPage()));
+        pageNavigatorComponent.put("count", String.valueOf(pageResponseDto.getCount()));
+        pageNavigatorComponent.put("url",
+                "/todo/list?size=" + pageRequestDto.getSize()
+                + "&finished=" + (pageRequestDto.isFinished() ? "true" : "false")
+                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
+                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&page=###"
+        );
+        model.addAttribute("pageNavigatorComponent", pageNavigatorComponent);
 
         model.addAttribute("error", error);
     }
