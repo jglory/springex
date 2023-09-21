@@ -30,7 +30,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public PageResponseDto<TodoDto> list(PageRequestDto pageRequestDto) {
         return PageResponseDto.<TodoDto>withAll()
-                .dtoList(
+                .items(
                         todoMapper.selectAll(pageRequestDto).stream()
                                 .map(vo -> modelMapper.map(vo, TodoDto.class))
                                 .toList()

@@ -200,7 +200,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${pageDto.dtoList}" var="item">
+                        <c:forEach items="${pageDto.items}" var="item">
                             <tr>
                                 <th scope="row"><c:out value="${item.tno}"/></th>
                                 <td><a href="/todo/read?tno=${item.tno}&page=${pageDto.page}&size=${pageDto.size}" class="text-docoration-none"><c:out value="${item.title}"/></a></td>

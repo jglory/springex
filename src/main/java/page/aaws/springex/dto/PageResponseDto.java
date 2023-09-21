@@ -78,17 +78,17 @@ public class PageResponseDto<E> {
      * 아이템 목록
      */
     @Getter
-    private List<E> dtoList;
+    private List<E> items;
 
     @Builder(builderMethodName = "withAll")
-    public PageResponseDto(PageRequestDto pageRequestDto, List<E> dtoList, int itemCount) {
+    public PageResponseDto(PageRequestDto pageRequestDto, List<E> items, int itemCount) {
         this.page = pageRequestDto.getPage();
         this.size = pageRequestDto.getSize();
 
         this.itemCount = itemCount;
         this.count = this.itemCount / this.size + (this.itemCount % this.size > 0 ? 1 : 0);
 
-        this.dtoList = dtoList;
+        this.items = items;
 
         this.endPage = (int)(Math.ceil(this.page / (float)this.size)) * this.size;
         this.startPage = this.endPage - this.size + 1;

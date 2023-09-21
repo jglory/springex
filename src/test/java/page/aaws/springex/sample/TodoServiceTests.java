@@ -30,7 +30,7 @@ public class TodoServiceTests {
                 .size(10)
                 .build());
         log.info(pageDto);
-        pageDto.getDtoList().forEach(log::info);
+        pageDto.getItems().forEach(log::info);
     }
 
     @Test
