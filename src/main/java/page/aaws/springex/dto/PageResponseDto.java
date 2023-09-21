@@ -20,6 +20,11 @@ public class PageResponseDto<E> {
     private int size;
 
     /**
+     * 총 페이지 개수
+     */
+    private int count;
+
+    /**
      * 총 아이템 개수
      */
     private int itemCount;
@@ -49,20 +54,14 @@ public class PageResponseDto<E> {
      */
     private List<E> dtoList;
 
-    /**
-     * 총 페이지 개수를 돌려준다.
-     * @return
-     */
-    public int getCount() {
-        return this.itemCount / this.size + (this.itemCount % this.size > 0 ? 1 : 0);
-    }
-
     @Builder(builderMethodName = "withAll")
     public PageResponseDto(PageRequestDto pageRequestDto, List<E> dtoList, int itemCount) {
         this.page = pageRequestDto.getPage();
         this.size = pageRequestDto.getSize();
 
         this.itemCount = itemCount;
+        this.count = this.itemCount / this.size + (this.itemCount % this.size > 0 ? 1 : 0);
+
         this.dtoList = dtoList;
 
         this.end = (int)(Math.ceil(this.page / 10.0)) * 10;
