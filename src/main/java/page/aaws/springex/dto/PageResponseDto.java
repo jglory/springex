@@ -40,6 +40,16 @@ public class PageResponseDto<E> {
     private int end;
 
     /**
+     * 내비게이션 시작 페이지의 이전 페이지 번호
+     */
+    private int lastPageOfPreviousBand;
+
+    /**
+     * 내비게이션 종료 페이지의 다음 페이지 번호
+     */
+    private int startPageOfNextBand;
+
+    /**
      * 내비게이션 시작 페이지의 이전 페이지 존재 여부
      */
     private boolean prev;
@@ -66,6 +76,13 @@ public class PageResponseDto<E> {
 
         this.end = (int)(Math.ceil(this.page / 10.0)) * 10;
         this.start = this.end - 9;
+
+        if (this.start > 1) {
+            this.lastPageOfPreviousBand = this.start - 1;
+        }
+        if (this.end < this.count) {
+            this.startPageOfNextBand = this.end + 1;
+        }
 
         int last = (int)(Math.ceil((itemCount /(double)size)));
         this.end = Math.min(end, last);
