@@ -203,7 +203,7 @@
                         <c:forEach items="${pageDto.items}" var="item">
                             <tr>
                                 <th scope="row"><c:out value="${item.tno}"/></th>
-                                <td><a href="/todo/read?tno=${item.tno}&page=${pageDto.page}&size=${pageDto.size}" class="text-docoration-none"><c:out value="${item.title}"/></a></td>
+                                <td><a href="#" onclick="event.preventDefault();self.location = encodeURI('/todo/read?tno=${item.tno}&page=${pageDto.page}&size=${pageDto.size}&finished=${searchComponent.finished ? "true" : "false"}&types=${searchComponent.titleChecked ? "t" : ""}&types=${searchComponent.writerChecked ? "w" : ""}&keyword=${searchComponent.keyword}&startDt=${searchComponent.startDt}&finishDt=${searchComponent.finishDt}');" class="text-docoration-none"><c:out value="${item.title}"/></a></td>
                                 <td><c:out value="${item.writer}"/></td>
                                 <td><c:out value="${item.dueDt}"/></td>
                                 <td><c:out value="${item.finished}"/></td>

@@ -93,7 +93,7 @@ public class TodoController {
     }
 
     @GetMapping("/read")
-    public void read(Long tno, PageRequestDto pageRequestDto, Model model) throws UnsupportedEncodingException {
+    public void read(Long tno, PageRequestDto pageRequestDto, Model model) {
         TodoDto dto = todoService.get(tno);
         log.info(dto);
 

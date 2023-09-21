@@ -94,15 +94,15 @@
       e.preventDefault();
       e.stopPropagation();
 
-      self.location = "/todo/remove?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked}&types=${queryString.writerChecked}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
+      self.location = "/todo/remove?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
     }, false);
 
     document.querySelector(".btn-primary").addEventListener("click", function (e) {
-      self.location = "/todo/modify?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked}&types=${queryString.writerChecked}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
+      self.location = "/todo/modify?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
     }, false);
 
     document.querySelector(".btn-secondary").addEventListener("click", function (e) {
-      self.location = "/todo/list?page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked}&types=${queryString.writerChecked}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
+      self.location = "/todo/list?page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
     }, false)
 
   </script>
