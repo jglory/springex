@@ -90,8 +90,11 @@ public class PageResponseDto<E> {
 
         this.dtoList = dtoList;
 
-        this.end = (int)(Math.ceil(this.page / 10.0)) * 10;
-        this.start = this.end - 9;
+        this.end = (int)(Math.ceil(this.page / (float)this.size)) * this.size;
+        this.start = this.end - this.size + 1;
+        if (this.end > this.count) {
+            this.end = this.count;
+        }
 
         if (this.start > 1) {
             this.previousBandExist = true;
