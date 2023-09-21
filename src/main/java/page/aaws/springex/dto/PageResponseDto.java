@@ -36,13 +36,13 @@ public class PageResponseDto<E> {
      * 내비게이션 시작 페이지 번호
      */
     @Getter
-    private int start;
+    private int startPage;
 
     /**
      * 내비게이션 종료 페이지 번호
      */
     @Getter
-    private int end;
+    private int endPage;
 
     /**
      * 내비게이션 시작 페이지의 이전 페이지 번호
@@ -90,19 +90,19 @@ public class PageResponseDto<E> {
 
         this.dtoList = dtoList;
 
-        this.end = (int)(Math.ceil(this.page / (float)this.size)) * this.size;
-        this.start = this.end - this.size + 1;
-        if (this.end > this.count) {
-            this.end = this.count;
+        this.endPage = (int)(Math.ceil(this.page / (float)this.size)) * this.size;
+        this.startPage = this.endPage - this.size + 1;
+        if (this.endPage > this.count) {
+            this.endPage = this.count;
         }
 
-        if (this.start > 1) {
+        if (this.startPage > 1) {
             this.previousBandExist = true;
-            this.lastPageOfPreviousBand = this.start - 1;
+            this.lastPageOfPreviousBand = this.startPage - 1;
         }
-        if (this.end < this.count) {
+        if (this.endPage < this.count) {
             this.nextBandExist = true;
-            this.startPageOfNextBand = this.end + 1;
+            this.startPageOfNextBand = this.endPage + 1;
         }
     }
 }

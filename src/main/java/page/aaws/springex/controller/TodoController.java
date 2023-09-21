@@ -58,8 +58,8 @@ public class TodoController {
 
 
         HashMap<String, String> pageNavigatorComponent = new HashMap<>();
-        pageNavigatorComponent.put("start", String.valueOf(pageResponseDto.getStart()));
-        pageNavigatorComponent.put("end", String.valueOf(pageResponseDto.getEnd()));
+        pageNavigatorComponent.put("start", String.valueOf(pageResponseDto.getStartPage()));
+        pageNavigatorComponent.put("end", String.valueOf(pageResponseDto.getEndPage()));
         pageNavigatorComponent.put("current", String.valueOf(pageResponseDto.getPage()));
         pageNavigatorComponent.put("count", String.valueOf(pageResponseDto.getCount()));
         pageNavigatorComponent.put("url",
