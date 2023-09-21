@@ -93,11 +93,20 @@ public class TodoController {
     }
 
     @GetMapping("/read")
-    public void read(Long tno, PageRequestDto pageRequestDto, Model model) {
+    public void read(Long tno, PageRequestDto pageRequestDto, Model model) throws UnsupportedEncodingException {
         TodoDto dto = todoService.get(tno);
         log.info(dto);
 
         model.addAttribute("dto", dto);
+
+        HashMap<String, String> queryString = new HashMap<>();
+        queryString.put("finished", pageRequestDto.isFinished() ? "true" : "false");
+        queryString.put("titleChecked", Arrays.asList(pageRequestDto.getTypes()).contains("t") ? "true" : "false");
+        queryString.put("writerChecked", Arrays.asList(pageRequestDto.getTypes()).contains("w") ? "true" : "false");
+        queryString.put("keyword", pageRequestDto.getKeyword());
+        queryString.put("startDt",  pageRequestDto.getStartDt() == null ? null : pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        queryString.put("finishDt", pageRequestDto.getFinishDt() == null ? null : pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        model.addAttribute("queryString", queryString);
     }
 
     @GetMapping("/remove")
