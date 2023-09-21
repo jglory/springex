@@ -35,7 +35,7 @@ public class TodoServiceImpl implements TodoService {
                                 .map(vo -> modelMapper.map(vo, TodoDto.class))
                                 .toList()
                 )
-                .total(todoMapper.selectCount(pageRequestDto))
+                .itemCount(todoMapper.selectCount(pageRequestDto))
                 .pageRequestDto(pageRequestDto)
                 .build();
     }

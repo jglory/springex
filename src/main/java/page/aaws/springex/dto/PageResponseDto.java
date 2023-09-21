@@ -11,7 +11,7 @@ import java.util.List;
 public class PageResponseDto<E> {
     private int page;
     private int size;
-    private int total;
+    private int itemCount;
 
     private int start;
     private int end;
@@ -26,23 +26,23 @@ public class PageResponseDto<E> {
      * @return
      */
     public int getCount() {
-        return this.total / this.size + (this.total % this.size > 0 ? 1 : 0);
+        return this.itemCount / this.size + (this.itemCount % this.size > 0 ? 1 : 0);
     }
 
     @Builder(builderMethodName = "withAll")
-    public PageResponseDto(PageRequestDto pageRequestDto, List<E> dtoList, int total) {
+    public PageResponseDto(PageRequestDto pageRequestDto, List<E> dtoList, int itemCount) {
         this.page = pageRequestDto.getPage();
         this.size = pageRequestDto.getSize();
 
-        this.total = total;
+        this.itemCount = itemCount;
         this.dtoList = dtoList;
 
         this.end = (int)(Math.ceil(this.page / 10.0)) * 10;
         this.start = this.end - 9;
 
-        int last = (int)(Math.ceil((total /(double)size)));
+        int last = (int)(Math.ceil((itemCount /(double)size)));
         this.end = Math.min(end, last);
         this.prev = this.start > 1;
-        this.next = total > this.end * this.size;
+        this.next = itemCount > this.end * this.size;
     }
 }
