@@ -96,10 +96,6 @@
                 `;
         }
 
-        _getComponentState() {
-            return {};
-        }
-
         render() {
             var state = Redux.queryComponentState(this);
         }

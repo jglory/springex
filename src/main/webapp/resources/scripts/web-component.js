@@ -6,7 +6,7 @@ class WebComponent extends HTMLElement {
 
     getComponentState() {
         let state = [];
-        state[this.componentId] = this.hasComponentLoaded() ? this._getComponentState() : {};
+        state[this.componentId] = this.hasComponentLoaded() && this._getComponentState ? this._getComponentState() : {};
         return state;
     }
 
