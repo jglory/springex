@@ -184,7 +184,7 @@ class TodoSearchComponent extends WebComponent {
     }
 
     render() {
-        var state = Redux.queryComponentState(Redux.store, this);
+        var state = Redux.queryComponentState(this);
 
         this.#elements["form"].action = state.action;
         this.#elements["finished"].checked = state.finished;

@@ -152,7 +152,7 @@
         }
 
         render() {
-            var state = Redux.queryComponentState(Redux.store, this);
+            var state = Redux.queryComponentState(this);
         }
     }
 

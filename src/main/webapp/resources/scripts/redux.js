@@ -7,8 +7,8 @@ Redux.registerComponent = function(component) {
 Redux.queryComponent = function (action) {
     return Redux.components[action.componentId];
 }
-Redux.queryComponentState = function (store, component) {
-    return store.getState()[component.componentId];
+Redux.queryComponentState = function (component) {
+    return Redux.store.getState()[component.componentId];
 }
 Redux.queryActionHandler = function (component, action) {
     const handler = eval("component." + snakeToCamel(action.type));
