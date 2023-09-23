@@ -1,4 +1,3 @@
-const ATTRIBUTE_ON_CHANGE = "ATTRIBUTE_ON_CHANGE";
 const FINISHED_ON_CLICK = "FINISHED_ON_CLICK";
 const TITLE_CHECKED_ON_CLICK = "TITLE_CHECKED_ON_CLICK";
 const WRITER_CHECKED_ON_CLICK = "WRITER_CHECKED_ON_CLICK";
@@ -103,18 +102,6 @@ class TodoSearchComponent extends WebComponent {
             startDt: this.#elements["startDt"].value,
             finishDt: this.#elements["finishDt"].value
         } : {};
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        Redux.dispatch(
-            this,
-            ATTRIBUTE_ON_CHANGE,
-            {
-                name: name,
-                oldValue: oldValue,
-                newValue: newValue,
-            }
-        );
     }
 
     attributeOnChange(action) {

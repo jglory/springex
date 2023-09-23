@@ -103,18 +103,6 @@
             // (happens in document.adoptNode, very rarely used)
         }
 
-        attributeChangedCallback(name, oldValue, newValue) {
-            Redux.dispatch(
-                this,
-                ATTRIBUTE_ON_CHANGE,
-                {
-                    name: name,
-                    oldValue: oldValue,
-                    newValue: newValue,
-                }
-            );
-        }
-
         attributeOnChange(action) {
             if (this.hasComponentLoaded()) {
                 switch (action.data.name) {

@@ -1,4 +1,5 @@
 const COMPONENT_ON_LOAD = "COMPONENT_ON_LOAD";  // 컴포넌트 로드
+const ATTRIBUTE_ON_CHANGE = "ATTRIBUTE_ON_CHANGE"; // 컴포넌트 속성값 변경됨
 
 class WebComponent extends HTMLElement {
     #loaded = false;
@@ -30,5 +31,18 @@ class WebComponent extends HTMLElement {
     disconnectedCallback() {
         // browser calls this method when the element is removed from the document
         // (can be called many times if an element is repeatedly added/removed)
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        console.log('attributeChangedCallback', name, oldValue, newValue)
+        Redux.dispatch(
+            this,
+            ATTRIBUTE_ON_CHANGE,
+            {
+                name: name,
+                oldValue: oldValue,
+                newValue: newValue,
+            }
+        );
     }
 }
