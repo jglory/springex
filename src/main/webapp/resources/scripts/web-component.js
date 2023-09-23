@@ -47,6 +47,18 @@ class WebComponent extends HTMLElement {
         );
     }
 
+    #attributeNameToOnChangeHandler(name) {
+        const handler = eval("this." + name + "AttributeOnChange");
+        return handler ? handler.bind(this) : undefined;
+    }
+
+    attributeOnChange(action) {
+        const handler = this.#attributeNameToOnChangeHandler(action.data.name);
+        if (handler) {
+            handler(action);
+        }
+    }
+
     adoptedCallback() {
         // called when the element is moved to a new document
         // (happens in document.adoptNode, very rarely used)
