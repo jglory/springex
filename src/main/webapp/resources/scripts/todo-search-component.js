@@ -93,11 +93,6 @@ class TodoSearchComponent extends WebComponent {
         this.#elements["finishDt"].value = this.getAttribute("finishDt");
     }
 
-    disconnectedCallback() {
-        // browser calls this method when the element is removed from the document
-        // (can be called many times if an element is repeatedly added/removed)
-    }
-
     _getComponentState() {
         return this.hasComponentLoaded() ? {
             action: this.#elements["form"].action,

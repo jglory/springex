@@ -26,4 +26,9 @@ class WebComponent extends HTMLElement {
     hasComponentLoaded() {
         return this.#loaded;
     }
+
+    disconnectedCallback() {
+        // browser calls this method when the element is removed from the document
+        // (can be called many times if an element is repeatedly added/removed)
+    }
 }
