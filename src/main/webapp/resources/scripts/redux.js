@@ -10,7 +10,7 @@ Redux.queryComponent = function (action) {
 Redux.queryComponentState = function (component) {
     return Redux.store.getState()[component.componentId];
 }
-Redux.queryActionHandler = function (component, action) {
+Redux.queryComponentActionHandler = function (component, action) {
     const handler = eval("component." + snakeToCamel(action.type));
     return handler ? handler.bind(component) : null;
 }
@@ -20,7 +20,7 @@ Redux.reducer = function (state, action) {
     }
 
     let component = Redux.queryComponent(action);
-    let actionHandler = Redux.queryActionHandler(component, action);
+    let actionHandler = Redux.queryComponentActionHandler(component, action);
     let newState;
     if (actionHandler) {
         actionHandler(action);
@@ -33,7 +33,7 @@ Redux.reducer = function (state, action) {
                     continue;
                 }
 
-                actionHandler = Redux.queryActionHandler(component, action);
+                actionHandler = Redux.queryComponentActionHandler(component, action);
                 if (actionHandler) {
                     actionHandler(action);
                     newState = Object.assign(newState, component.getComponentState());
