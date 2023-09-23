@@ -52,7 +52,7 @@
 
         connectedCallback() {
             this.#bind();
-            Redux.dispatch(this.componentId, COMPONENT_ON_LOAD);
+            Redux.dispatch(this, COMPONENT_ON_LOAD);
         }
 
         #bind() {
@@ -113,7 +113,7 @@
 
         attributeChangedCallback(name, oldValue, newValue) {
             Redux.dispatch(
-                this.componentId,
+                this,
                 ATTRIBUTE_ON_CHANGE,
                 {
                     name: name,

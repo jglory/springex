@@ -49,7 +49,7 @@ class TodoSearchComponent extends WebComponent {
 
     connectedCallback() {
         this.#bind();
-        Redux.dispatch(this.componentId, COMPONENT_ON_LOAD);
+        Redux.dispatch(this, COMPONENT_ON_LOAD);
     }
 
     #bind() {
@@ -63,7 +63,7 @@ class TodoSearchComponent extends WebComponent {
 
         this.#elements["finished"].addEventListener("click", function (e) {
             Redux.dispatch(
-                this.componentId,
+                this,
                 FINISHED_ON_CLICK,
                 {
                     titleChecked: this.#elements['finished'].checked,
@@ -72,7 +72,7 @@ class TodoSearchComponent extends WebComponent {
         }.bind(this), false);
         this.#elements["titleChecked"].addEventListener("click", function (e) {
             Redux.dispatch(
-                this.componentId,
+                this,
                 TITLE_CHECKED_ON_CLICK,
                 {
                     titleChecked: this.#elements['titleChecked'].checked,
@@ -81,7 +81,7 @@ class TodoSearchComponent extends WebComponent {
         }.bind(this), false);
         this.#elements["writerChecked"].addEventListener("click", function (e) {
             Redux.dispatch(
-                this.componentId,
+                this,
                 WRITER_CHECKED_ON_CLICK,
                 {
                     titleChecked: this.#elements['writerChecked'].checked,
@@ -121,7 +121,7 @@ class TodoSearchComponent extends WebComponent {
 
     attributeChangedCallback(name, oldValue, newValue) {
         Redux.dispatch(
-            this.componentId,
+            this,
             ATTRIBUTE_ON_CHANGE,
             {
                 name: name,

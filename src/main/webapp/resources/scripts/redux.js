@@ -5,7 +5,7 @@ Redux.registerComponent = function(component) {
     return Redux.components.length - 1;
 }
 Redux.queryComponent = function (action) {
-    return Redux.components[action.componentId];
+    return Redux.components.find((element, index, arr) => element === action.component);
 }
 Redux.queryComponentState = function (component) {
     return Redux.store.getState()[component.componentId];
@@ -15,7 +15,7 @@ Redux.queryActionHandler = function (component, action) {
     return handler ? handler.bind(component) : null;
 }
 Redux.reducer = function (state, action) {
-    if (action.hasOwnProperty("componentId") === false) {
+    if (action.hasOwnProperty("component") === false) {
         return;
     }
 
@@ -27,10 +27,11 @@ Redux.reducer = function (state, action) {
         newState = Object.assign({}, state, component.getComponentState());
 
         for(let i = 0; i < Redux.components.length; ++i) {
-            if (i === action.componentId) {
+            component = Redux.components[i];
+            if (component === action.component) {
                 continue;
             }
-            component = Redux.components[i];
+
             actionHandler = Redux.queryActionHandler(component, action);
             if (actionHandler) {
                 actionHandler(action);
@@ -44,9 +45,9 @@ Redux.store = Redux.createStore(
     Redux.reducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
-Redux.dispatch = function (componentId, type, data) {
+Redux.dispatch = function (component, type, data) {
     Redux.store.dispatch({
-        componentId: componentId,
+        component: component,
         type: type,
         data: data ?? {}
     });
