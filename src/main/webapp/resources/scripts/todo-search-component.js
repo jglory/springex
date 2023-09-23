@@ -49,10 +49,7 @@ class TodoSearchComponent extends WebComponent {
 
     connectedCallback() {
         this.#bind();
-        Redux.store.dispatch({
-            componentId: this.componentId,
-            type: COMPONENT_ON_LOAD
-        })
+        Redux.dispatch(this.componentId, COMPONENT_ON_LOAD);
     }
 
     #bind() {
@@ -65,31 +62,31 @@ class TodoSearchComponent extends WebComponent {
         this.#elements['finishDt'] = this.shadowRoot.querySelector("input[name='finishDt']");
 
         this.#elements["finished"].addEventListener("click", function (e) {
-            Redux.store.dispatch({
-                componentId: this.componentId,
-                type: FINISHED_ON_CLICK,
-                data: {
+            Redux.dispatch(
+                this.componentId,
+                FINISHED_ON_CLICK,
+                {
                     titleChecked: this.#elements['finished'].checked,
                 }
-            });
+            );
         }.bind(this), false);
         this.#elements["titleChecked"].addEventListener("click", function (e) {
-            Redux.store.dispatch({
-                componentId: this.componentId,
-                type: TITLE_CHECKED_ON_CLICK,
-                data: {
+            Redux.dispatch(
+                this.componentId,
+                TITLE_CHECKED_ON_CLICK,
+                {
                     titleChecked: this.#elements['titleChecked'].checked,
                 }
-            });
+            );
         }.bind(this), false);
         this.#elements["writerChecked"].addEventListener("click", function (e) {
-            Redux.store.dispatch({
-                componentId: this.componentId,
-                type: WRITER_CHECKED_ON_CLICK,
-                data: {
+            Redux.dispatch(
+                this.componentId,
+                WRITER_CHECKED_ON_CLICK,
+                {
                     titleChecked: this.#elements['writerChecked'].checked,
                 }
-            });
+            );
         }.bind(this), false);
     }
 
@@ -123,15 +120,15 @@ class TodoSearchComponent extends WebComponent {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        Redux.store.dispatch({
-            componentId: this.componentId,
-            type: ATTRIBUTE_ON_CHANGE,
-            data: {
+        Redux.dispatch(
+            this.componentId,
+            ATTRIBUTE_ON_CHANGE,
+            {
                 name: name,
                 oldValue: oldValue,
                 newValue: newValue,
             }
-        });
+        );
     }
 
     attributeOnChange(action) {

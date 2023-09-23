@@ -52,10 +52,7 @@
 
         connectedCallback() {
             this.#bind();
-            Redux.store.dispatch({
-                componentId: this.componentId,
-                type: COMPONENT_ON_LOAD
-            })
+            Redux.dispatch(this.componentId, COMPONENT_ON_LOAD);
         }
 
         #bind() {
@@ -115,15 +112,15 @@
         }
 
         attributeChangedCallback(name, oldValue, newValue) {
-            Redux.store.dispatch({
-                componentId: this.componentId,
-                type: ATTRIBUTE_ON_CHANGE,
-                data: {
+            Redux.dispatch(
+                this.componentId,
+                ATTRIBUTE_ON_CHANGE,
+                {
                     name: name,
                     oldValue: oldValue,
                     newValue: newValue,
                 }
-            });
+            );
         }
 
         attributeOnChange(action) {

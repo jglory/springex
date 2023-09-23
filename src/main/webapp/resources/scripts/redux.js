@@ -44,6 +44,13 @@ Redux.store = Redux.createStore(
     Redux.reducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+Redux.dispatch = function (componentId, type, data) {
+    Redux.store.dispatch({
+        componentId: componentId,
+        type: type,
+        data: data ?? {}
+    });
+}
 Redux.subscribeAllComponentsToStore = function () {
     let component = null;
     for (let i =0; i < Redux.components.length; ++i) {
