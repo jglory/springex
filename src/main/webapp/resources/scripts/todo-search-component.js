@@ -12,8 +12,6 @@ class TodoSearchComponent extends WebComponent {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open'});
-
         // Define the template
         const template = document.createElement("template");
         template.innerHTML = `

@@ -17,6 +17,7 @@ class WebComponent extends HTMLElement {
     constructor() {
         super();
         this.componentId = Redux.registerComponent(this);
+        this.attachShadow({ mode: 'open'});
     }
 
     connectedCallback() {
