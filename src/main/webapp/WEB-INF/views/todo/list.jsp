@@ -99,21 +99,19 @@
         }
 
         attributeOnChange(action) {
-            if (this.hasComponentLoaded()) {
-                switch (action.data.name) {
-                    case "start":
-                        // this.#elements["start"].action = this.getAttribute("start");
-                        break;
-                    case "end":
-                        // this.#elements["end"].checked = this.getAttribute("end") === "true";
-                        break;
-                    case "count":
-                        // this.#elements["count"].checked = this.getAttribute("count") === "true";
-                        break;
-                    case "url":
-                        // this.#elements["url"].checked = this.getAttribute("url") === "true";
-                        break;
-                }
+            switch (action.data.name) {
+                case "start":
+                    // this.#elements["start"].action = this.getAttribute("start");
+                    break;
+                case "end":
+                    // this.#elements["end"].checked = this.getAttribute("end") === "true";
+                    break;
+                case "count":
+                    // this.#elements["count"].checked = this.getAttribute("count") === "true";
+                    break;
+                case "url":
+                    // this.#elements["url"].checked = this.getAttribute("url") === "true";
+                    break;
             }
         }
 

@@ -34,6 +34,11 @@ class WebComponent extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
+        // 컴포넌트가 로딩 완료가 되지 않았다면 처리도 의미가 없어 보인다. 분기 처리.
+        if (this.hasComponentLoaded() === false) {
+            return;
+        }
+
         Redux.dispatch(
             this,
             ATTRIBUTE_ON_CHANGE,

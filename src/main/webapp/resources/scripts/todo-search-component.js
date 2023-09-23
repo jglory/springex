@@ -105,34 +105,32 @@ class TodoSearchComponent extends WebComponent {
     }
 
     attributeOnChange(action) {
-        if (this.hasComponentLoaded()) {
-            switch (action.data.name) {
-                case "action":
-                    this.#elements["form"].action = this.getAttribute("action");
-                    break;
-                case "finished":
-                    this.#elements["finished"].checked = this.getAttribute("finished") === "true";
-                    break;
-                case "titleChecked":
-                    this.#elements["titleChecked"].checked = this.getAttribute("titleChecked") === "true";
-                    break;
-                case "writerChecked":
-                    this.#elements["writerChecked"].checked = this.getAttribute("writerChecked") === "true";
-                    break;
-                case "keyword":
-                    this.#elements["keyword"].value = this.getAttribute("keyword");
-                    break;
-                case "startDt":
-                    if (this.getAttribute("startDt")) {
-                        this.#elements["startDt"].value = this.getAttribute("startDt");
-                    }
-                    break;
-                case "finishDt":
-                    if (this.getAttribute("finishDt")) {
-                        this.#elements["finishDt"].value = this.getAttribute("finishDt");
-                    }
-                    break;
-            }
+        switch (action.data.name) {
+            case "action":
+                this.#elements["form"].action = this.getAttribute("action");
+                break;
+            case "finished":
+                this.#elements["finished"].checked = this.getAttribute("finished") === "true";
+                break;
+            case "titleChecked":
+                this.#elements["titleChecked"].checked = this.getAttribute("titleChecked") === "true";
+                break;
+            case "writerChecked":
+                this.#elements["writerChecked"].checked = this.getAttribute("writerChecked") === "true";
+                break;
+            case "keyword":
+                this.#elements["keyword"].value = this.getAttribute("keyword");
+                break;
+            case "startDt":
+                if (this.getAttribute("startDt")) {
+                    this.#elements["startDt"].value = this.getAttribute("startDt");
+                }
+                break;
+            case "finishDt":
+                if (this.getAttribute("finishDt")) {
+                    this.#elements["finishDt"].value = this.getAttribute("finishDt");
+                }
+                break;
         }
     }
 
