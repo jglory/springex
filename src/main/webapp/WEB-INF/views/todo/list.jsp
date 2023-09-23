@@ -118,9 +118,7 @@
         }
 
         _getComponentState() {
-            return this.hasComponentLoaded() ? {
-
-            } : {};
+            return {};
         }
 
         render() {

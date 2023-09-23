@@ -93,7 +93,7 @@ class TodoSearchComponent extends WebComponent {
     }
 
     _getComponentState() {
-        return this.hasComponentLoaded() ? {
+        return {
             action: this.#elements["form"].action,
             finished: this.#elements["finished"].checked,
             titleChecked: this.#elements["titleChecked"].checked,
@@ -101,7 +101,7 @@ class TodoSearchComponent extends WebComponent {
             keyword: this.#elements["keyword"].value,
             startDt: this.#elements["startDt"].value,
             finishDt: this.#elements["finishDt"].value
-        } : {};
+        };
     }
 
     attributeOnChange(action) {
