@@ -136,11 +136,6 @@ class TodoSearchComponent extends WebComponent {
         }
     }
 
-    adoptedCallback() {
-        // called when the element is moved to a new document
-        // (happens in document.adoptNode, very rarely used)
-    }
-
     finishedOnClick(action) {
 
     }

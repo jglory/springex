@@ -98,11 +98,6 @@
                 `;
         }
 
-        adoptedCallback() {
-            // called when the element is moved to a new document
-            // (happens in document.adoptNode, very rarely used)
-        }
-
         attributeOnChange(action) {
             if (this.hasComponentLoaded()) {
                 switch (action.data.name) {
