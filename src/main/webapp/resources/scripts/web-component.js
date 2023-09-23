@@ -4,10 +4,6 @@ const ATTRIBUTE_ON_CHANGE = "ATTRIBUTE_ON_CHANGE"; // 컴포넌트 속성값 변
 class WebComponent extends HTMLElement {
     #loaded = false;
 
-    _getComponentState() {
-        throw "WebComponent._getComponentState 를 구현하여 주십시오.";
-    }
-
     getComponentState() {
         let state = [];
         state[this.componentId] = this.hasComponentLoaded() ? this._getComponentState() : {};
