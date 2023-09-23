@@ -54,7 +54,7 @@ Redux.dispatch = function (component, type, data) {
         data: data ?? {}
     });
 }
-Redux.subscribeAllComponentsToStore = function () {
+Redux.subscribeAll = function () {
     let component = null;
     for (let i =0; i < Redux.components.length; ++i) {
         component = Redux.components[i];

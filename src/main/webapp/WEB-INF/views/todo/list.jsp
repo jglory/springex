@@ -193,7 +193,7 @@
     <script src="/resources/bootstrap.bundle.min.js"></script>
     <script type="application/javascript">
         addEventListener("load", function (e) {
-            Redux.subscribeAllComponentsToStore();
+            Redux.subscribeAll();
 
             // error 출력
             <c:if test="${error != ''}">
