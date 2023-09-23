@@ -26,16 +26,18 @@ Redux.reducer = function (state, action) {
         actionHandler(action);
         newState = Object.assign({}, state, component.getComponentState());
 
-        for(let i = 0; i < Redux.components.length; ++i) {
-            component = Redux.components[i];
-            if (component === action.component) {
-                continue;
-            }
+        if (action.type !== COMPONENT_ON_LOAD) {
+            for(let i = 0; i < Redux.components.length; ++i) {
+                component = Redux.components[i];
+                if (component === action.component) {
+                    continue;
+                }
 
-            actionHandler = Redux.queryActionHandler(component, action);
-            if (actionHandler) {
-                actionHandler(action);
-                newState = Object.assign(newState, component.getComponentState());
+                actionHandler = Redux.queryActionHandler(component, action);
+                if (actionHandler) {
+                    actionHandler(action);
+                    newState = Object.assign(newState, component.getComponentState());
+                }
             }
         }
     }

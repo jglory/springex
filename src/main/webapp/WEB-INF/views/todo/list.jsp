@@ -22,7 +22,6 @@
 <script type="application/javascript">
 
     class TodoPageNavigatorComponent extends WebComponent {
-        #loaded = false;
         #elements = [];
 
         static get observedAttributes() {
@@ -47,16 +46,13 @@
             this.shadowRoot.appendChild(template.content.cloneNode(true));
         }
 
-        connectedCallback() {
-            this.#bind();
-            Redux.dispatch(this, COMPONENT_ON_LOAD);
-        }
-
         #bind() {
 
         }
 
         componentOnLoad(action) {
+            this.#bind();
+
             let prev = "";
             let next = "";
             let pages = "";
@@ -100,7 +96,6 @@
                     </ul>
                 </div>
                 `;
-            this.#loaded = true;
         }
 
         adoptedCallback() {
@@ -121,7 +116,7 @@
         }
 
         attributeOnChange(action) {
-            if (this.#loaded) {
+            if (this.hasComponentLoaded()) {
                 switch (action.data.name) {
                     case "start":
                         // this.#elements["start"].action = this.getAttribute("start");
@@ -140,7 +135,7 @@
         }
 
         _getComponentState() {
-            return this.#loaded ? {
+            return this.hasComponentLoaded() ? {
 
             } : {};
         }

@@ -1,6 +1,8 @@
 const COMPONENT_ON_LOAD = "COMPONENT_ON_LOAD";  // 컴포넌트 로드
 
 class WebComponent extends HTMLElement {
+    #loaded = false;
+
     _getComponentState() {
         throw "WebComponent._getComponentState 를 구현하여 주십시오.";
     }
@@ -14,5 +16,14 @@ class WebComponent extends HTMLElement {
     constructor() {
         super();
         this.componentId = Redux.registerComponent(this);
+    }
+
+    connectedCallback() {
+        this.#loaded = true;
+        Redux.dispatch(this, COMPONENT_ON_LOAD);
+    }
+
+    hasComponentLoaded() {
+        return this.#loaded;
     }
 }

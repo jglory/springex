@@ -4,7 +4,6 @@ const TITLE_CHECKED_ON_CLICK = "TITLE_CHECKED_ON_CLICK";
 const WRITER_CHECKED_ON_CLICK = "WRITER_CHECKED_ON_CLICK";
 
 class TodoSearchComponent extends WebComponent {
-    #loaded = false;
     #elements = [];
 
     static get observedAttributes() {
@@ -42,11 +41,6 @@ class TodoSearchComponent extends WebComponent {
                 </form>
                 `;
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-    }
-
-    connectedCallback() {
-        this.#bind();
-        Redux.dispatch(this, COMPONENT_ON_LOAD);
     }
 
     #bind() {
@@ -88,6 +82,8 @@ class TodoSearchComponent extends WebComponent {
     }
 
     componentOnLoad(action) {
+        this.#bind();
+
         this.#elements["form"].action = this.getAttribute("action");
         this.#elements["finished"].checked = this.getAttribute("finished") === "true";
         this.#elements["titleChecked"].checked = this.getAttribute("titleChecked") === "true";
@@ -95,8 +91,6 @@ class TodoSearchComponent extends WebComponent {
         this.#elements["keyword"].value = this.getAttribute("keyword");
         this.#elements["startDt"].value = this.getAttribute("startDt");
         this.#elements["finishDt"].value = this.getAttribute("finishDt");
-
-        this.#loaded = true;
     }
 
     disconnectedCallback() {
@@ -105,7 +99,7 @@ class TodoSearchComponent extends WebComponent {
     }
 
     _getComponentState() {
-        return this.#loaded ? {
+        return this.hasComponentLoaded() ? {
             action: this.#elements["form"].action,
             finished: this.#elements["finished"].checked,
             titleChecked: this.#elements["titleChecked"].checked,
@@ -129,7 +123,7 @@ class TodoSearchComponent extends WebComponent {
     }
 
     attributeOnChange(action) {
-        if (this.#loaded) {
+        if (this.hasComponentLoaded()) {
             switch (action.data.name) {
                 case "action":
                     this.#elements["form"].action = this.getAttribute("action");
