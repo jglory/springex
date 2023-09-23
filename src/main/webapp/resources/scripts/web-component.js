@@ -34,7 +34,6 @@ class WebComponent extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('attributeChangedCallback', name, oldValue, newValue)
         Redux.dispatch(
             this,
             ATTRIBUTE_ON_CHANGE,
