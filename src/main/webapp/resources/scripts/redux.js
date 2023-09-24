@@ -15,28 +15,29 @@ Redux.queryComponentActionHandler = function (component, action) {
 }
 Redux.reducer = function (state, action) {
     if (action.hasOwnProperty("component") === false) {
-        return;
+        return state;
     }
 
     let component = Redux.queryComponent(action);
     let actionHandler = Redux.queryComponentActionHandler(component, action);
-    let newState;
-    if (actionHandler) {
-        actionHandler(action);
-        newState = Object.assign({}, state, component.getComponentState());
+    if (actionHandler === null) {
+        return state;
+    }
 
-        if (action.type !== COMPONENT_ON_LOAD) {
-            for(let i = 0; i < Redux.components.length; ++i) {
-                component = Redux.components[i];
-                if (component === action.component) {
-                    continue;
-                }
+    actionHandler(action);
+    let newState = Object.assign({}, state, component.getComponentState());
 
-                actionHandler = Redux.queryComponentActionHandler(component, action);
-                if (actionHandler) {
-                    actionHandler(action);
-                    newState = Object.assign(newState, component.getComponentState());
-                }
+    if (action.type !== COMPONENT_ON_LOAD) {
+        for(let i = 0; i < Redux.components.length; ++i) {
+            component = Redux.components[i];
+            if (component === action.component) {
+                continue;
+            }
+
+            actionHandler = Redux.queryComponentActionHandler(component, action);
+            if (actionHandler) {
+                actionHandler(action);
+                newState = Object.assign(newState, component.getComponentState());
             }
         }
     }
