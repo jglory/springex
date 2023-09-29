@@ -73,6 +73,7 @@
                         </c:forEach>
                         </tbody>
                     </table>
+                    <button class="btn btn-primary" type="button" onclick="self.location = encodeURI('/todo/register?tno=${item.tno}&page=${pageDto.page}&size=${pageDto.size}&finished=${searchComponent.finished ? "true" : "false"}&types=${searchComponent.titleChecked ? "t" : ""}&types=${searchComponent.writerChecked ? "w" : ""}&keyword=${searchComponent.keyword}&startDt=${searchComponent.startDt}&finishDt=${searchComponent.finishDt}');">등록</button>
                     <todo-page-navigator-component start="${pageNavigatorComponent.start}" end="${pageNavigatorComponent.end}" current="${pageNavigatorComponent.current}" count="${pageNavigatorComponent.count}" url="${pageNavigatorComponent.url}"></todo-page-navigator-component>
                 </div>
             </div>
@@ -91,8 +92,8 @@
         addEventListener("load", function (e) {
             Redux.subscribeAll();
 
+            <c:if test="${not empty error}">
             // error 출력
-            <c:if test="${error != ''}">
             alert("${error}");
             </c:if>
         }, false)

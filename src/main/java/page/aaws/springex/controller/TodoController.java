@@ -138,25 +138,38 @@ public class TodoController {
 
     @PostMapping("/register")
     public String register(@Valid TodoDto dto,
+                           PageRequestDto pageRequestDto,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
-        log.info("POST /todo/register");
+                           RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
+        log.info("POST /todo/register" + dto);
+        log.info("POST /todo/register" + pageRequestDto);
+
+        String backUrlData = "page=" + pageRequestDto.getPage()
+                + "&size=" + pageRequestDto.getSize()
+                + "&finished=" + pageRequestDto.isFinished()
+                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
+                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"));
 
         if (bindingResult.hasErrors()) {
             log.info("has errors..........");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/todo/register";
+            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return "redirect:/todo/register?" + backUrlData;
         }
 
         log.info(dto);
         todoService.register(dto);
 
-        return "redirect:/todo/list";
+        return "redirect:/todo/list?" + backUrlData;
     }
 
     @GetMapping("/register")
-    public void showRegisterForm(Model model) {
-        log.info("GET /todo/register");
+    public void showRegisterForm(PageRequestDto pageRequestDto, Model model) {
+        log.info("GET /todo/register" + pageRequestDto);
+        model.addAttribute("type0", pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "");
+        model.addAttribute("type1", pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "");
     }
 
     @GetMapping("/modify")

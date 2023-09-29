@@ -46,6 +46,14 @@
                 <div class="card-header">Featured</div>
                 <div class="card-body">
                     <form action="/todo/register" method="post">
+                        <input type="hidden" name="page" value="${pageRequestDto.page}">
+                        <input type="hidden" name="size" value="${pageRequestDto.size}">
+                        <input type="hidden" name="finished" value="${pageRequestDto.finished ? "true" : "false"}">
+                        <input type="hidden" name="types" value="${type0}">
+                        <input type="hidden" name="types" value="${type1}">
+                        <input type="hidden" name="keyword" value="${pageRequestDto.keyword}">
+                        <input type="hidden" name="startDt" value="${pageRequestDto.startDt}">
+                        <input type="hidden" name="finishDt" value="${pageRequestDto.finishDt}">
                         <div class="input-group mb-3">
                             <span class="input-group-text">할일</span>
                             <input type="text" name="title" class="form-control" placeholder="">
@@ -69,12 +77,18 @@
                         </div>
                     </form>
                     <script type="application/javascript">
-                        const serverValidResult = {};
-                        // <!-- ${errors} -->
-                        <c:forEach items="${errors}" var="error">
-                        serverValidResult['${error.getField()}'] = '${error.defaultMessage}';
-                        </c:forEach>
-                        console.log(serverValidResult);
+                        document.querySelector(".btn-primary").addEventListener("click", function (e) {
+                            document.querySelector("form").submit();
+                        }, false);
+
+                        document.querySelector(".btn-secondary").addEventListener("click", function (e) {
+                            self.location = "/todo/list?page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${pageRequestDto.finished}&types=${type0}&types=${type1}&keyword=${pageRequestDto.keyword}&startDt=${pageRequestDto.startDt}&finishDt=${pageRequestDto.finishDt}";
+                        }, false)
+
+                        <c:if test="${not empty error}">
+                        // error 출력
+                        alert("${error}");
+                        </c:if>
                     </script>
                 </div>
             </div>
