@@ -127,13 +127,22 @@ public class TodoController {
     }
 
     @GetMapping("/remove")
-    public String remove(Long tno, PageRequestDto pageRequestDto, RedirectAttributes redirectAttributes) {
+    public String remove(Long tno, PageRequestDto pageRequestDto, RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
         log.info("---------------remove---------------");
         log.info("tno: " + tno);
 
+        String backUrlData = "page=" + pageRequestDto.getPage()
+                + "&size=" + pageRequestDto.getSize()
+                + "&finished=" + pageRequestDto.isFinished()
+                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
+                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"));
+
         todoService.remove(tno);
 
-        return "redirect:/todo/list?page=" + pageRequestDto.getPage() + "&size=" + pageRequestDto.getSize();
+        return "redirect:/todo/list?" + backUrlData;
     }
 
     @PostMapping("/register")
