@@ -46,6 +46,12 @@
           <form action="/todo/modify" method="post">
             <input type="hidden" name="page" value="${pageRequestDto.page}">
             <input type="hidden" name="size" value="${pageRequestDto.size}">
+            <input type="hidden" name="finished" value="${pageRequestDto.finished ? "true" : "false"}">
+            <input type="hidden" name="types" value="${type0}">
+            <input type="hidden" name="types" value="${type1}">
+            <input type="hidden" name="keyword" value="${pageRequestDto.keyword}">
+            <input type="hidden" name="startDt" value="${pageRequestDto.startDt}">
+            <input type="hidden" name="finishDt" value="${pageRequestDto.finishDt}">
           <div class="input-group mb-3">
             <span class="input-group-text">TNO</span>
             <input type="text" name="tno" class="form-control" value="<c:out value="${dto.tno}"></c:out>" readonly>
@@ -96,8 +102,13 @@
     }, false);
 
     document.querySelector(".btn-secondary").addEventListener("click", function (e) {
-      self.location = "/todo/read?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}"
+      self.location = "/todo/read?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${pageRequestDto.finished}&types=${type0}&types=${type1}&keyword=${pageRequestDto.keyword}&startDt=${pageRequestDto.startDt}&finishDt=${pageRequestDto.finishDt}";
     }, false)
+
+    // error 출력
+    <c:if test="${not empty error}">
+    alert("${error}");
+    </c:if>
 
   </script>
 </body>

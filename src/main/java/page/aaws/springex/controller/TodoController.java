@@ -56,6 +56,14 @@ public class TodoController {
         searchComponent.put("finishDt", pageRequestDto.getFinishDt() == null ? null : pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         model.addAttribute("searchComponent", searchComponent);
 
+        log.info("/todo/list?size=" + pageRequestDto.getSize()
+                + "&finished=" + (pageRequestDto.isFinished() ? "true" : "false")
+                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
+                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&page=###");
 
         HashMap<String, String> pageNavigatorComponent = new HashMap<>();
         pageNavigatorComponent.put("start", String.valueOf(pageResponseDto.getStartPage()));
@@ -81,15 +89,24 @@ public class TodoController {
     public String modify(@Valid TodoDto dto,
                        BindingResult bindingResult,
                        PageRequestDto pageRequestDto,
-                       RedirectAttributes redirectAttributes) {
+                       RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
+        String backUrlData = "page=" + pageRequestDto.getPage()
+                + "&size=" + pageRequestDto.getSize()
+                + "&finished=" + pageRequestDto.isFinished()
+                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
+                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"));
+
         if (bindingResult.hasErrors()) {
             log.info("POST /todo/modify : error. " + bindingResult.getAllErrors());
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/todo/modify?tno=" + dto.getTno() + "&page=" + pageRequestDto.getPage() + "&size=" + pageRequestDto.getSize();
+            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return "redirect:/todo/modify?tno=" + dto.getTno() + "&" + backUrlData;
         }
         log.info("POST /todo/modify : " + dto);
         todoService.modify(dto);
-        return "redirect:/todo/read?tno=" + dto.getTno() + "&page=" + pageRequestDto.getPage() + "&size=" + pageRequestDto.getSize();
+        return "redirect:/todo/read?tno=" + dto.getTno() + "&" + backUrlData;
     }
 
     @GetMapping("/read")
@@ -143,8 +160,10 @@ public class TodoController {
     }
 
     @GetMapping("/modify")
-    public void showModifyForm(Long tno, PageRequestDto pageRequestDto, Model model) {
+    public void showModifyForm(Long tno, PageRequestDto pageRequestDto, Model model, RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
         log.info("GET /todo/modify?tno=" + tno);
         model.addAttribute("dto", todoService.get(tno));
+        model.addAttribute("type0", pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "");
+        model.addAttribute("type1", pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "");
     }
 }
