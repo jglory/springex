@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>일상다반사</title>
+  <title>할일 관리</title>
   <link href="/resources/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -21,7 +21,7 @@
     <div class="col">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">日常茶槃思</a></span>
+          <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">할일 관리</a></span>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

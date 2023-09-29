@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>일상다반사</title>
+    <title>할일 관리</title>
     <link href="/resources/bootstrap.min.css" rel="stylesheet">
 </head>
 <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js"></script>
@@ -27,7 +27,7 @@
         <div class="col">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">日常茶槃思</a></span>
+                    <span class="navbar-brand"><a href="#"><img src="/resources/green-tea.png" width="20" height="20"></a> <a href="#">할일 관리</a></span>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -47,18 +47,18 @@
     <div class="row">
         <div class="col">
             <div class="card">
-                <div class="card-header">Featured</div>
+                <div class="card-header">할 일</div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <todo-search-component action="${searchComponent['action']}", page-size="${searchComponent['page-size']}", finished="${searchComponent['finished']}", titleChecked="${searchComponent['titleChecked']}", writerChecked="${searchComponent['writerChecked']}", keyword="${searchComponent['keyword']}", startDt="${searchComponent['startDt']}", finishDt="${searchComponent['finishDt']}"></todo-search-component>
+                    <h5 class="card-title"></h5>
+                    <todo-search-component action="${searchComponent['action']}", page-size="${searchComponent['page-size']}", finished="${searchComponent['finished']}", titleChecked="${searchComponent['titleChecked']}", writerChecked="${searchComponent['writerChecked']}", keyword="${searchComponent['keyword']}", startDt="${searchComponent['startDt']}", finishDt="${searchComponent['finishDt']}"></todo-search-component><br>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Tno</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Writer</th>
-                            <th scope="col">DueDate</th>
-                            <th scope="col">Finished</th>
+                            <th scope="col">번호</th>
+                            <th scope="col">할일</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">일정</th>
+                            <th scope="col">완료 여부</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -68,7 +68,7 @@
                                 <td><a href="#" onclick="event.preventDefault();self.location = encodeURI('/todo/read?tno=${item.tno}&page=${pageDto.page}&size=${pageDto.size}&finished=${searchComponent.finished ? "true" : "false"}&types=${searchComponent.titleChecked ? "t" : ""}&types=${searchComponent.writerChecked ? "w" : ""}&keyword=${searchComponent.keyword}&startDt=${searchComponent.startDt}&finishDt=${searchComponent.finishDt}');" class="text-docoration-none"><c:out value="${item.title}"/></a></td>
                                 <td><c:out value="${item.writer}"/></td>
                                 <td><c:out value="${item.dueDt}"/></td>
-                                <td><c:out value="${item.finished}"/></td>
+                                <td><c:out value="${item.finished ? '완료' : '진행중'}"/></td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -81,9 +81,9 @@
     </div>
     <!-- FOOTER -->
     <div class="row fixed-bottom" style="z-index: -100">
-        <footer class="py-1 my-1">
-            <p class="text-center text-muted">Footer</p>
-        </footer>
+<%--        <footer class="py-1 my-1">--%>
+<%--            <p class="text-center text-muted">Footer</p>--%>
+<%--        </footer>--%>
     </div>
 </div>
 
