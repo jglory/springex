@@ -17,7 +17,6 @@ public class TodoDto {
     @NotEmpty
     private String title;
 
-    @Future
     private LocalDate dueDt;
 
     private boolean finished;
