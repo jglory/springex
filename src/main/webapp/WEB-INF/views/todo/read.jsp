@@ -47,25 +47,25 @@
 
           <div class="input-group mb-3">
             <span class="input-group-text">TNO</span>
-            <input type="text" name="tno" class="form-control" value="<c:out value="${dto.tno}"></c:out>" readonly>
+            <input type="text" name="tno" class="form-control" value="<c:out value="${todoDto.tno}"></c:out>" readonly>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Title</span>
-            <input type="text" name="title" class="form-control" value="<c:out value="${dto.title}"></c:out>" readonly>
+            <input type="text" name="title" class="form-control" value="<c:out value="${todoDto.title}"></c:out>" readonly>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">DueDate</span>
-            <input type="date" name="dueDt" class="form-control" value="<c:out value="${dto.dueDt}"></c:out>" readonly>
+            <input type="date" name="dueDt" class="form-control" value="<c:out value="${todoDto.dueDt}"></c:out>" readonly>
           </div>
           <div class="input-group mb-3">
             <span class="input-group-text">Writer</span>
-            <input type="text" name="writer" class="form-control" value="<c:out value="${dto.writer}"></c:out>" readonly>
+            <input type="text" name="writer" class="form-control" value="<c:out value="${todoDto.writer}"></c:out>" readonly>
           </div>
           <div class="form-check">
             <label class="form-check-label">
               Finished &nbsp;
             </label>
-            <input class="form-check-input" type="checkbox" name="finished" class="form-control" ${dto.finished ? "checked" : ""}>
+            <input class="form-check-input" type="checkbox" name="finished" class="form-control" ${todoDto.finished ? "checked" : ""}>
           </div>
 
           <div class="my-4">
@@ -94,11 +94,11 @@
       e.preventDefault();
       e.stopPropagation();
 
-      self.location = "/todo/remove?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
+      self.location = "/todo/remove?tno=${todoDto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
     }, false);
 
     document.querySelector(".btn-primary").addEventListener("click", function (e) {
-      self.location = "/todo/modify?tno=${dto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
+      self.location = "/todo/modify?tno=${todoDto.tno}&page=${pageRequestDto.page}&size=${pageRequestDto.size}&finished=${queryString.finished}&types=${queryString.titleChecked ? "t" : ""}&types=${queryString.writerChecked ? "w" : ""}&keyword=${queryString.keyword}&startDt=${queryString.startDt}&finishDt=${queryString.finishDt}";
     }, false);
 
     document.querySelector(".btn-secondary").addEventListener("click", function (e) {

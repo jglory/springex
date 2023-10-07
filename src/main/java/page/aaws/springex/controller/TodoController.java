@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import lombok.extern.log4j.Log4j2;
 import lombok.RequiredArgsConstructor;
 
+import page.aaws.springex.controller.transformer.FailTransformer;
+import page.aaws.springex.controller.transformer.OkTransformer;
 import page.aaws.springex.dto.PageRequestDto;
 import page.aaws.springex.dto.PageResponseDto;
 import page.aaws.springex.dto.TodoDto;
@@ -30,6 +33,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Log4j2
 public class TodoController {
     private final TodoService todoService;
+
+    private final OkTransformer okTransformer;
+
+    private final FailTransformer failTransformer;
 
     @GetMapping("/list")
     public void list(@Valid PageRequestDto pageRequestDto,
@@ -60,9 +67,9 @@ public class TodoController {
                 + "&finished=" + (pageRequestDto.isFinished() ? "true" : "false")
                 + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
                 + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
                 + "&page=###");
 
         HashMap<String, String> pageNavigatorComponent = new HashMap<>();
@@ -75,9 +82,9 @@ public class TodoController {
                 + "&finished=" + (pageRequestDto.isFinished() ? "true" : "false")
                 + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
                 + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
                 + "&page=###"
         );
         model.addAttribute("pageNavigatorComponent", pageNavigatorComponent);
@@ -95,9 +102,9 @@ public class TodoController {
                 + "&finished=" + pageRequestDto.isFinished()
                 + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
                 + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"));
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8));
 
         if (bindingResult.hasErrors()) {
             log.info("POST /todo/modify : error. " + bindingResult.getAllErrors());
@@ -110,20 +117,8 @@ public class TodoController {
     }
 
     @GetMapping("/read")
-    public void read(Long tno, PageRequestDto pageRequestDto, Model model) {
-        TodoDto dto = todoService.get(tno);
-        log.info(dto);
-
-        model.addAttribute("dto", dto);
-
-        HashMap<String, String> queryString = new HashMap<>();
-        queryString.put("finished", pageRequestDto.isFinished() ? "true" : "false");
-        queryString.put("titleChecked", Arrays.asList(pageRequestDto.getTypes()).contains("t") ? "true" : "false");
-        queryString.put("writerChecked", Arrays.asList(pageRequestDto.getTypes()).contains("w") ? "true" : "false");
-        queryString.put("keyword", pageRequestDto.getKeyword());
-        queryString.put("startDt",  pageRequestDto.getStartDt() == null ? null : pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        queryString.put("finishDt", pageRequestDto.getFinishDt() == null ? null : pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        model.addAttribute("queryString", queryString);
+    public String read(Long tno, PageRequestDto pageRequestDto, Model model) {
+        return this.okTransformer.process(pageRequestDto, todoService.get(tno), model);
     }
 
     @GetMapping("/remove")
@@ -136,9 +131,9 @@ public class TodoController {
                 + "&finished=" + pageRequestDto.isFinished()
                 + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
                 + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"));
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8));
 
         todoService.remove(tno);
 
@@ -158,9 +153,9 @@ public class TodoController {
                 + "&finished=" + pageRequestDto.isFinished()
                 + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
                 + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), "UTF-8")
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), "UTF-8"));
+                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
+                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
+                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8));
 
         if (bindingResult.hasErrors()) {
             log.info("has errors..........");
