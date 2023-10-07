@@ -47,12 +47,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void register(TodoDto dto) {
-        log.info(modelMapper);
-
-        TodoVo vo = modelMapper.map(dto, TodoVo.class);
-        log.info(vo);
-
-        todoMapper.insert(vo);
+        todoMapper.insert(modelMapper.map(dto, TodoVo.class));
     }
 
     @Override
