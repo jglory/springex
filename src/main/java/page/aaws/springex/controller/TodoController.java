@@ -115,9 +115,6 @@ public class TodoController {
 
     @GetMapping("/modify")
     public void showModifyForm(Long tno, PageRequestDto pageRequestDto, Model model, RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
-        log.info("GET /todo/modify?tno=" + tno);
-        model.addAttribute("dto", todoService.get(tno));
-        model.addAttribute("type0", pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "");
-        model.addAttribute("type1", pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "");
+        this.okTransformer.process(pageRequestDto, todoService.get(tno), model);
     }
 }
