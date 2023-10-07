@@ -35,6 +35,7 @@ public class ApplicationConfig {
 
         return switch (request.getMethod() + " " + request.getRequestURI()) {
             case "GET /todo/list" -> this.applicationContext.getBean("listFailTransformer", ListFailTransformer.class);
+            case "POST /todo/modify" -> this.applicationContext.getBean("modifyFailTransformer", ModifyFailTransformer.class);
             case "GET /todo/read" -> this.applicationContext.getBean("readFailTransformer", ReadFailTransformer.class);
             default -> null;
         };
@@ -44,6 +45,12 @@ public class ApplicationConfig {
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public ListFailTransformer listFailTransformer() {
         return new ListFailTransformerImpl();
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public ModifyFailTransformer modifyFailTransformer() {
+        return new ModifyFailTransformerImpl();
     }
 
     @Bean
@@ -59,6 +66,7 @@ public class ApplicationConfig {
 
         return switch (request.getMethod() + " " + request.getRequestURI()) {
             case "GET /todo/list" -> this.applicationContext.getBean("listOkTransformer", ListOkTransformer.class);
+            case "POST /todo/modify" -> this.applicationContext.getBean("modifyOkTransformer", ModifyOkTransformer.class);
             case "GET /todo/read" -> this.applicationContext.getBean("readOkTransformer", ReadOkTransformer.class);
             default -> null;
         };
@@ -68,6 +76,12 @@ public class ApplicationConfig {
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public ListOkTransformer listOkTransformer() {
         return new ListOkTransformerImpl();
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public ModifyOkTransformer modifyOkTransformer() {
+        return new ModifyOkTransformerImpl();
     }
 
     @Bean

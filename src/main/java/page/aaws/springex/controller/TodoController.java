@@ -43,27 +43,16 @@ public class TodoController {
     }
 
     @PostMapping("/modify")
-    public String modify(@Valid TodoDto dto,
+    public String modify(@Valid TodoDto todoDto,
                        BindingResult bindingResult,
                        PageRequestDto pageRequestDto,
                        RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
-        String backUrlData = "page=" + pageRequestDto.getPage()
-                + "&size=" + pageRequestDto.getSize()
-                + "&finished=" + pageRequestDto.isFinished()
-                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
-                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8));
-
         if (bindingResult.hasErrors()) {
-            log.info("POST /todo/modify : error. " + bindingResult.getAllErrors());
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
-            return "redirect:/todo/modify?tno=" + dto.getTno() + "&" + backUrlData;
+            return this.failTransformer.process(todoDto, bindingResult, pageRequestDto, redirectAttributes);
         }
-        log.info("POST /todo/modify : " + dto);
-        todoService.modify(dto);
-        return "redirect:/todo/read?tno=" + dto.getTno() + "&" + backUrlData;
+
+        todoService.modify(todoDto);
+        return this.okTransformer.process(pageRequestDto, todoDto);
     }
 
     @GetMapping("/read")
