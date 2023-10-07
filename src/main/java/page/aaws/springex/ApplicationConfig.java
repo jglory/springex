@@ -34,9 +34,7 @@ public class ApplicationConfig {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         return switch (request.getMethod() + " " + request.getRequestURI()) {
-            case "GET /todo/list" -> this.applicationContext.getBean("listFailTransformer", ListFailTransformer.class);
             case "POST /todo/modify" -> this.applicationContext.getBean("modifyFailTransformer", ModifyFailTransformer.class);
-            case "GET /todo/read" -> this.applicationContext.getBean("readFailTransformer", ReadFailTransformer.class);
             case "POST /todo/register" -> this.applicationContext.getBean("registerFailTransformer", RegisterFailTransformer.class);
             default -> null;
         };
@@ -44,20 +42,8 @@ public class ApplicationConfig {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public ListFailTransformer listFailTransformer() {
-        return new ListFailTransformerImpl();
-    }
-
-    @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public ModifyFailTransformer modifyFailTransformer() {
         return new ModifyFailTransformerImpl();
-    }
-
-    @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public ReadFailTransformer readFailTransformer() {
-        return new ReadFailTransformerImpl();
     }
 
     @Bean
