@@ -34,9 +34,16 @@ public class ApplicationConfig {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         return switch (request.getMethod() + " " + request.getRequestURI()) {
+            case "GET /todo/list" -> this.applicationContext.getBean("listFailTransformer", ListFailTransformer.class);
             case "GET /todo/read" -> this.applicationContext.getBean("readFailTransformer", ReadFailTransformer.class);
             default -> null;
         };
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public ListFailTransformer listFailTransformer() {
+        return new ListFailTransformerImpl();
     }
 
     @Bean
@@ -51,9 +58,16 @@ public class ApplicationConfig {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         return switch (request.getMethod() + " " + request.getRequestURI()) {
+            case "GET /todo/list" -> this.applicationContext.getBean("listOkTransformer", ListOkTransformer.class);
             case "GET /todo/read" -> this.applicationContext.getBean("readOkTransformer", ReadOkTransformer.class);
             default -> null;
         };
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public ListOkTransformer listOkTransformer() {
+        return new ListOkTransformerImpl();
     }
 
     @Bean
