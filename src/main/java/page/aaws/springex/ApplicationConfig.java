@@ -68,6 +68,7 @@ public class ApplicationConfig {
             case "GET /todo/list" -> this.applicationContext.getBean("listOkTransformer", ListOkTransformer.class);
             case "POST /todo/modify" -> this.applicationContext.getBean("modifyOkTransformer", ModifyOkTransformer.class);
             case "GET /todo/read" -> this.applicationContext.getBean("readOkTransformer", ReadOkTransformer.class);
+            case "GET /todo/register" -> this.applicationContext.getBean("showRegisterFormOkTransformer", ShowRegisterFormOkTransformer.class);
             default -> null;
         };
     }
@@ -88,5 +89,11 @@ public class ApplicationConfig {
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public ReadOkTransformer readOkTransformer() {
         return new ReadOkTransformerImpl();
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public ShowRegisterFormOkTransformer showRegisterFormOkTransformer() {
+        return new ShowRegisterFormOkTransformerImpl();
     }
 }

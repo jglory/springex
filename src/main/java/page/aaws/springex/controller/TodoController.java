@@ -110,9 +110,7 @@ public class TodoController {
 
     @GetMapping("/register")
     public void showRegisterForm(PageRequestDto pageRequestDto, Model model) {
-        log.info("GET /todo/register" + pageRequestDto);
-        model.addAttribute("type0", pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "");
-        model.addAttribute("type1", pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "");
+        this.okTransformer.process(pageRequestDto, model);
     }
 
     @GetMapping("/modify")
