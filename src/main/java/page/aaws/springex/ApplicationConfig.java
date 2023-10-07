@@ -37,6 +37,7 @@ public class ApplicationConfig {
             case "GET /todo/list" -> this.applicationContext.getBean("listFailTransformer", ListFailTransformer.class);
             case "POST /todo/modify" -> this.applicationContext.getBean("modifyFailTransformer", ModifyFailTransformer.class);
             case "GET /todo/read" -> this.applicationContext.getBean("readFailTransformer", ReadFailTransformer.class);
+            case "POST /todo/register" -> this.applicationContext.getBean("registerFailTransformer", RegisterFailTransformer.class);
             default -> null;
         };
     }
@@ -61,6 +62,12 @@ public class ApplicationConfig {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public RegisterFailTransformer registerFailTransformer() {
+        return new RegisterFailTransformerImpl();
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public OkTransformer okTransformer() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -71,6 +78,7 @@ public class ApplicationConfig {
             case "GET /todo/register" -> this.applicationContext.getBean("showRegisterFormOkTransformer", ShowRegisterFormOkTransformer.class);
             case "GET /todo/remove" -> this.applicationContext.getBean("removeOkTransformer", RemoveOkTransformer.class);
             case "POST /todo/modify" -> this.applicationContext.getBean("modifyOkTransformer", ModifyOkTransformer.class);
+            case "POST /todo/register" -> this.applicationContext.getBean("registerOkTransformer", RegisterOkTransformer.class);
             default -> null;
         };
     }
@@ -91,6 +99,12 @@ public class ApplicationConfig {
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public ReadOkTransformer readOkTransformer() {
         return new ReadOkTransformerImpl();
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public RegisterOkTransformer registerOkTransformer() {
+        return new RegisterOkTransformerImpl();
     }
 
     @Bean

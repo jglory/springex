@@ -3,9 +3,6 @@ package page.aaws.springex.controller;
 import jakarta.validation.Valid;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.format.DateTimeFormatter;
 
 import lombok.extern.log4j.Log4j2;
 import lombok.RequiredArgsConstructor;
@@ -71,28 +68,12 @@ public class TodoController {
                            PageRequestDto pageRequestDto,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) throws UnsupportedEncodingException {
-        log.info("POST /todo/register" + dto);
-        log.info("POST /todo/register" + pageRequestDto);
-
-        String backUrlData = "page=" + pageRequestDto.getPage()
-                + "&size=" + pageRequestDto.getSize()
-                + "&finished=" + pageRequestDto.isFinished()
-                + "&types=" + (pageRequestDto.getTypes().length > 0 ? pageRequestDto.getTypes()[0] : "")
-                + "&types=" + (pageRequestDto.getTypes().length > 1 ? pageRequestDto.getTypes()[1] : "")
-                + "&keyword=" + URLEncoder.encode(pageRequestDto.getKeyword(), StandardCharsets.UTF_8)
-                + "&startDt=" + (pageRequestDto.getStartDt() == null ? "" : URLEncoder.encode(pageRequestDto.getStartDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8))
-                + "&finishDt=" + (pageRequestDto.getFinishDt() == null ? "" : URLEncoder.encode(pageRequestDto.getFinishDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), StandardCharsets.UTF_8));
-
         if (bindingResult.hasErrors()) {
-            log.info("has errors..........");
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors().get(0).getDefaultMessage());
-            return "redirect:/todo/register?" + backUrlData;
+            return this.failTransformer.process(dto, pageRequestDto, bindingResult, redirectAttributes);
         }
 
-        log.info(dto);
         todoService.register(dto);
-
-        return "redirect:/todo/list?" + backUrlData;
+        return this.okTransformer.process(pageRequestDto);
     }
 
     @GetMapping("/register")
